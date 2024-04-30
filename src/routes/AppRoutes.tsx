@@ -11,7 +11,7 @@ export const AppRoutes = () => {
             <Routes>
                 <Route element={<AuthLayout />}>
                     <Route path="/sign-in" element={<SignIn />} />
-                    <Route path="/sign-in" element={<SignUp />} />
+                    <Route path="/sign-up" element={<SignUp />} />
                 </Route>
                 <Route element={<RootLayout />}>
                     <Route index element={<HomePage />} />

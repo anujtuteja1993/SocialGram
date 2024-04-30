@@ -1,5 +1,3 @@
-import React from "react";
-
 const SignIn = () => {
     return (
         <div className="max-w-sm space-y-3">
