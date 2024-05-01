@@ -1,9 +1,31 @@
 import logo from "../../../assets/logo.png";
+import * as z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { SignUpValidation } from "../../../lib/validation";
 
 const SignUp = () => {
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<z.infer<typeof SignUpValidation>>({
+        resolver: zodResolver(SignUpValidation),
+        defaultValues: {
+            name: "",
+            username: "",
+            email: "",
+            password: "",
+        },
+    });
+
+    function onSubmit(values: z.infer<typeof SignUpValidation>) {
+        console.log(values);
+    }
+
     return (
         <form
-            // onSubmit={handleSubmit}
+            onSubmit={handleSubmit(onSubmit)}
             className="max-w-[400px] mx-auto w-full p-7 relative"
         >
             <div className="flex-center flex-col">
@@ -16,15 +38,21 @@ const SignUp = () => {
                     <h1 className="font-bold text-2xl">SocialGram</h1>
                 </div>
                 <div className="flex justify-center">
-                    <h2 className="font-medium text-2xl pb-3">
+                    <h2 className="font-medium text-2xl pb-4">
                         Create a new account
                     </h2>
                 </div>
             </div>
             <div className="flex-col max-w-[300px] m-auto">
                 <div>
-                    <div className="flex flex-col mb-5">
-                        <label className="input input-bordered flex items-center gap-2">
+                    <div className="flex flex-col mb-1">
+                        <label
+                            className={
+                                errors.name
+                                    ? "input input-bordered input-error flex items-center gap-2"
+                                    : "input input-bordered flex items-center gap-2"
+                            }
+                        >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 16 16"
@@ -34,48 +62,73 @@ const SignUp = () => {
                                 <path
                                     d="M13 15C13 16.1046 13 17 9 17C5 17 5 16.1046 5 15C5 13.8954 6.79086 13 9 13C11.2091 13 13 13.8954 13 15Z"
                                     stroke="#1C274C"
-                                    stroke-width="1.5"
+                                    strokeWidth="1.5"
                                 />
                                 <path
                                     d="M2 12C2 8.22876 2 6.34315 3.17157 5.17157C4.34315 4 6.22876 4 10 4H14C17.7712 4 19.6569 4 20.8284 5.17157C22 6.34315 22 8.22876 22 12C22 15.7712 22 17.6569 20.8284 18.8284C19.6569 20 17.7712 20 14 20H10C6.22876 20 4.34315 20 3.17157 18.8284C2 17.6569 2 15.7712 2 12Z"
                                     stroke="#1C274C"
-                                    stroke-width="1.5"
+                                    strokeWidth="1.5"
                                 />
                                 <path
                                     d="M19 12H15"
                                     stroke="#1C274C"
-                                    stroke-width="1.5"
-                                    stroke-linecap="round"
+                                    strokeWidth="1.5"
+                                    strokeLinecap="round"
                                 />
                                 <path
                                     d="M19 9H14"
                                     stroke="#1C274C"
-                                    stroke-width="1.5"
-                                    stroke-linecap="round"
+                                    strokeWidth="1.5"
+                                    strokeLinecap="round"
                                 />
                                 <path
                                     d="M19 15H16"
                                     stroke="#1C274C"
-                                    stroke-width="1.5"
-                                    stroke-linecap="round"
+                                    strokeWidth="1.5"
+                                    strokeLinecap="round"
                                 />
                             </svg>
                             <input
+                                {...register("name")}
                                 type="text"
                                 className="grow"
                                 placeholder="Name"
                             />
                         </label>
-                        <div>
-                            <p className="text-red-400 font-sans text-sm">
-                                {/* {formErrors.firstName} */}
-                            </p>
+                        <div className="h-[20px] mt-1">
+                            {errors.name && (
+                                <div className="flex flex-row ml-2 items-center">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        className="stroke-current shrink-0 h-4 w-4"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth="2"
+                                            stroke="rgb(239 68 68)"
+                                            d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+                                        />
+                                    </svg>
+                                    <p className="text-xs text-red-500 ml-1">
+                                        {errors?.name?.message}
+                                    </p>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
                 <div>
-                    <div className="flex flex-col mb-5">
-                        <label className="input input-bordered flex items-center gap-2">
+                    <div className="flex flex-col mb-1">
+                        <label
+                            className={
+                                errors.username
+                                    ? "input input-bordered input-error flex items-center gap-2"
+                                    : "input input-bordered flex items-center gap-2"
+                            }
+                        >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 16 16"
@@ -85,21 +138,46 @@ const SignUp = () => {
                                 <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" />
                             </svg>
                             <input
+                                {...register("username")}
                                 type="text"
                                 className="grow"
                                 placeholder="Username"
                             />
                         </label>
-                        <div>
-                            <p className="text-red-400 font-sans text-sm">
-                                {/* {formErrors.lastName} */}
-                            </p>
+                        <div className="h-[20px] mt-1">
+                            {errors.name && (
+                                <div className="flex flex-row ml-2 items-center">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        className="stroke-current shrink-0 h-4 w-4"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth="2"
+                                            stroke="rgb(239 68 68)"
+                                            d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+                                        />
+                                    </svg>
+                                    <p className="text-xs text-red-500 ml-1">
+                                        {errors?.username?.message}
+                                    </p>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
                 <div>
-                    <div className="flex flex-col mb-5">
-                        <label className="input input-bordered flex items-center gap-2">
+                    <div className="flex flex-col mb-1">
+                        <label
+                            className={
+                                errors.email
+                                    ? "input input-bordered input-error flex items-center gap-2"
+                                    : "input input-bordered flex items-center gap-2"
+                            }
+                        >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 16 16"
@@ -110,21 +188,46 @@ const SignUp = () => {
                                 <path d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z" />
                             </svg>
                             <input
+                                {...register("email")}
                                 type="text"
                                 className="grow"
                                 placeholder="Email"
                             />
                         </label>
-                        <div>
-                            <p className="text-red-400 font-sans text-sm">
-                                {/* {formErrors.email} */}
-                            </p>
+                        <div className="h-[20px] mt-1">
+                            {errors.name && (
+                                <div className="flex flex-row ml-2 items-center">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        className="stroke-current shrink-0 h-4 w-4"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth="2"
+                                            stroke="rgb(239 68 68)"
+                                            d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+                                        />
+                                    </svg>
+                                    <p className="text-xs text-red-500 ml-1">
+                                        {errors?.email?.message}
+                                    </p>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
                 <div>
                     <div className="flex flex-col mb-5">
-                        <label className="input input-bordered flex items-center gap-2">
+                        <label
+                            className={
+                                errors.password
+                                    ? "input input-bordered input-error flex items-center gap-2"
+                                    : "input input-bordered flex items-center gap-2"
+                            }
+                        >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 16 16"
@@ -138,29 +241,41 @@ const SignUp = () => {
                                 />
                             </svg>
                             <input
+                                {...register("password")}
                                 type="password"
                                 className="grow"
-                                value="password"
+                                placeholder="Password"
                             />
                         </label>
-                        <div>
-                            <p className="text-red-400 font-sans text-sm">
-                                {/* {formErrors.password} */}
-                            </p>
+                        <div className="h-[20px] mt-1">
+                            {errors.name && (
+                                <div className="flex flex-row ml-2 items-center">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        className="stroke-current shrink-0 h-4 w-4"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth="2"
+                                            stroke="rgb(239 68 68)"
+                                            d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+                                        />
+                                    </svg>
+                                    <p className="text-xs text-red-500 ml-1">
+                                        {errors?.password?.message}
+                                    </p>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
-                <button
-                    // onSubmit={handleSubmit}
-                    type="submit"
-                    className="btn w-full py-4 relative"
-                >
+                <button type="submit" className="btn w-full py-4 relative">
                     Sign Up
                 </button>
-                <p
-                    // onClick={() => props.onFormSwitch("login")}
-                    className="text-center mt-4 hover:cursor-pointer"
-                >
+                <p className="text-center mt-4 hover:cursor-pointer">
                     Already have an account? Log in
                 </p>
             </div>
