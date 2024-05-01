@@ -3,6 +3,7 @@ import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { SignUpValidation } from "../../../lib/validation";
+import { Link } from "react-router-dom";
 
 const SignUp = () => {
     const {
@@ -145,7 +146,7 @@ const SignUp = () => {
                             />
                         </label>
                         <div className="h-[20px] mt-1">
-                            {errors.name && (
+                            {errors.username && (
                                 <div className="flex flex-row ml-2 items-center">
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -195,7 +196,7 @@ const SignUp = () => {
                             />
                         </label>
                         <div className="h-[20px] mt-1">
-                            {errors.name && (
+                            {errors.email && (
                                 <div className="flex flex-row ml-2 items-center">
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -248,7 +249,7 @@ const SignUp = () => {
                             />
                         </label>
                         <div className="h-[20px] mt-1">
-                            {errors.name && (
+                            {errors.password && (
                                 <div className="flex flex-row ml-2 items-center">
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -275,8 +276,14 @@ const SignUp = () => {
                 <button type="submit" className="btn w-full py-4 relative">
                     Sign Up
                 </button>
-                <p className="text-center mt-4 hover:cursor-pointer">
-                    Already have an account? Log in
+                <p className="text-center mt-4">
+                    Already registered?
+                    <Link
+                        className="ml-1 underline text-accent-content"
+                        to={"/sign-in"}
+                    >
+                        Sign in
+                    </Link>
                 </p>
             </div>
         </form>
