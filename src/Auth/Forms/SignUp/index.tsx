@@ -22,7 +22,11 @@ const SignUp = () => {
     });
 
     function onSubmit(values: z.infer<typeof SignUpValidation>) {
-        createNewUser(values);
+        const newAccount = createNewUser(values);
+
+        if (!newAccount) {
+            return;
+        }
     }
 
     return (
