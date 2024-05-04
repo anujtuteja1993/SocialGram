@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { SignUpValidation } from "../../../lib/validation";
 import { Link } from "react-router-dom";
+import { createNewUser } from "../../../lib/appwrite/api";
 
 const SignUp = () => {
     const {
@@ -21,7 +22,7 @@ const SignUp = () => {
     });
 
     function onSubmit(values: z.infer<typeof SignUpValidation>) {
-        console.log(values);
+        createNewUser(values);
     }
 
     return (
