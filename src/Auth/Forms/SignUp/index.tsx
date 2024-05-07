@@ -3,8 +3,13 @@ import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { SignUpValidation } from "../../../lib/validation";
-import { Link } from "react-router-dom";
-import { createNewUser } from "../../../lib/appwrite/api";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import {
+    useCreateUserAccount,
+    useSignInAccount,
+} from "../../../lib/react-query/queriesAndMutations";
+import { useUserContext } from "../../../contexts/userContext";
 
 const SignUp = () => {
     const {
@@ -21,11 +26,44 @@ const SignUp = () => {
         },
     });
 
-    function onSubmit(values: z.infer<typeof SignUpValidation>) {
-        const newAccount = createNewUser(values);
+    const { mutateAsync: createNewUser } = useCreateUserAccount();
+    const { mutateAsync: signInAccount } = useSignInAccount();
 
-        if (!newAccount) {
-            return;
+    const { checkCurrentUser } = useUserContext();
+    const navigate = useNavigate();
+
+    async function onSubmit(values: z.infer<typeof SignUpValidation>) {
+        let newAccount: unknown = await createNewUser(values);
+        console.log(newAccount);
+        if (
+            (newAccount =
+                "AppwriteException: A user with the same id, email, or phone already exists in this project.")
+        ) {
+            toast("User Registeration failed", {
+                className: "custom-toast",
+                draggable: true,
+            });
+        }
+        const session = await signInAccount({
+            email: values.email,
+            password: values.password,
+        });
+        if (!session) {
+            toast("Unable to create session", {
+                className: "custom-toast",
+                draggable: true,
+            });
+        }
+        const isUserLoggedIn = await checkCurrentUser();
+        console.log(isUserLoggedIn);
+        if (isUserLoggedIn) {
+            console.log("isUserLoggedin Should navigate");
+            navigate("/");
+        } else {
+            toast("Sign up failed", {
+                className: "custom-toast",
+                draggable: true,
+            });
         }
     }
 
