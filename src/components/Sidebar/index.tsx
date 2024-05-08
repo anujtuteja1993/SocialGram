@@ -10,7 +10,7 @@ import {
 
 const Sidebar = () => {
     return (
-        <div className="hidden md:flex flex-col w-[80px] h-screen items-center">
+        <div className="hidden md:flex flex-col w-[80px] h-screen items-center fixed left-0">
             <div className="hidden md:block my-8">
                 <button className="h-[50px] w-[50px]">
                     <img src={logo} alt="logo"></img>

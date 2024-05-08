@@ -8,7 +8,7 @@ import {
 
 const Bottombar = () => {
     return (
-        <div className="flex fixed bottom-0 md:hidden">
+        <div className="flex fixed bottom-0 bg-base-100 md:hidden">
             <div className="flex flex-row w-screen h-auto justify-around">
                 <div>
                     <button className="h-[50px] w-[50px] inline-flex justify-center items-center rounded-lg transition duration-200 hover:bg-primary hover:bg-opacity-20 hover:scale-110 active:scale-90">
