@@ -1,6 +1,6 @@
 import { BookmarkIcon, HeartIcon } from "@heroicons/react/24/outline";
 
-const HomePage = () => {
+const Home = () => {
     return (
         <div className="mt-10">
             <div className="m-10">
@@ -200,4 +200,4 @@ const HomePage = () => {
     );
 };
 
-export default HomePage;
+export default Home;

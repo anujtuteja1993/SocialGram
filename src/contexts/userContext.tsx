@@ -35,7 +35,6 @@ export const UserContextProvider = ({
     const checkCurrentUser = async () => {
         try {
             const currentUser = await getCurrentUser();
-            console.log(currentUser);
             if (currentUser) {
                 setUser({
                     id: currentUser.$id,
