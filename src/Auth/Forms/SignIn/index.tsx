@@ -1,10 +1,57 @@
 import logo from "../../../assets/logo.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { SignInValidation } from "../../../lib/validation";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { toast } from "react-toastify";
+import { useUserContext } from "../../../contexts/userContext";
+import { useSignInAccount } from "../../../lib/react-query/queriesAndMutations";
 
 const SignIn = () => {
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<z.infer<typeof SignInValidation>>({
+        resolver: zodResolver(SignInValidation),
+        defaultValues: {
+            email: "",
+            password: "",
+        },
+    });
+    const { mutateAsync: signInAccount } = useSignInAccount();
+    const { checkCurrentUser, isUserAuthenticated } = useUserContext();
+    const navigate = useNavigate();
+
+    const onSubmit = async (values: z.infer<typeof SignInValidation>) => {
+        const session = await signInAccount({
+            email: values.email,
+            password: values.password,
+        });
+
+        if (!session) {
+            toast("Unable to create session", {
+                className: "custom-toast",
+                draggable: true,
+            });
+        }
+        const isUserLoggedIn = await checkCurrentUser();
+        console.log(isUserLoggedIn);
+        if (isUserLoggedIn) {
+            console.log("isUserLoggedin Should navigate");
+            navigate("/");
+        } else {
+            toast("Sign in failed", {
+                className: "custom-toast",
+                draggable: true,
+            });
+        }
+    };
+
     return (
         <form
-            // onSubmit={handleSubmit(onSubmit)}
+            onSubmit={handleSubmit(onSubmit)}
             className="max-w-[400px] mx-auto w-full p-7 relative"
         >
             <div className="flex-center flex-col mb-4">
@@ -30,10 +77,10 @@ const SignIn = () => {
                                 <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" />
                             </svg>
                             <input
-                                // {...register("username")}
+                                {...register("email")}
                                 type="text"
                                 className="grow"
-                                placeholder="Username"
+                                placeholder="Email"
                             />
                         </label>
                     </div>
@@ -54,7 +101,7 @@ const SignIn = () => {
                                 />
                             </svg>
                             <input
-                                // {...register("password")}
+                                {...register("password")}
                                 type="password"
                                 className="grow"
                                 placeholder="Password"

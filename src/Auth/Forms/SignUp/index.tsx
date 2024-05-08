@@ -34,7 +34,6 @@ const SignUp = () => {
 
     async function onSubmit(values: z.infer<typeof SignUpValidation>) {
         let newAccount: unknown = await createNewUser(values);
-        console.log(newAccount);
         if (
             (newAccount =
                 "AppwriteException: A user with the same id, email, or phone already exists in this project.")
@@ -55,7 +54,6 @@ const SignUp = () => {
             });
         }
         const isUserLoggedIn = await checkCurrentUser();
-        console.log(isUserLoggedIn);
         if (isUserLoggedIn) {
             console.log("isUserLoggedin Should navigate");
             navigate("/");

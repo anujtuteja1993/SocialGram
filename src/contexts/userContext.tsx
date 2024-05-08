@@ -35,6 +35,7 @@ export const UserContextProvider = ({
     const checkCurrentUser = async () => {
         try {
             const currentUser = await getCurrentUser();
+            console.log(currentUser);
             if (currentUser) {
                 setUser({
                     id: currentUser.$id,
@@ -45,8 +46,9 @@ export const UserContextProvider = ({
                     bio: currentUser.bio,
                 });
                 setIsUserAuthenticated(true);
+                return true;
             }
-            return true;
+            return false;
         } catch (error) {
             console.log(error);
             return false;
@@ -54,8 +56,10 @@ export const UserContextProvider = ({
     };
 
     useEffect(() => {
-        //localStorage.getItem("cookieFallback") === null
-        if (localStorage.getItem("cookieFallback") === "[]") {
+        if (
+            localStorage.getItem("cookieFallback") === "[]" ||
+            localStorage.getItem("cookieFallback") === null
+        ) {
             navigate("/sign-in");
         }
         checkCurrentUser();
