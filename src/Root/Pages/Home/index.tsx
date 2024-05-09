@@ -1,12 +1,13 @@
 import { BookmarkIcon, HeartIcon } from "@heroicons/react/24/outline";
-
+import { HomeIcon as HomeSolid } from "@heroicons/react/24/solid";
 const Home = () => {
     return (
-        <div className="mt-10">
-            <div className="m-10">
-                <h1 className="text-3xl">Home</h1>
+        <div className="flex flex-col mt-20 gap-5 items-center">
+            <div className="flex gap-1 items-center">
+                <HomeSolid className="h-[25px] w-[25px] md:h-[30px] md:w-[30px]" />
+                <h1 className="text-2xl font-semibold md:text-3xl">Home</h1>
             </div>
-            <div className="container w-screen mb-5 border-[1px] rounded-xl border-primary-content md:max-w-xl">
+            <div className="container w-screen border-[1px] rounded-xl border-primary-content md:max-w-xl">
                 <div className="flex flex-col m-10">
                     <div className="flex flex-row mb-3">
                         <div className="avatar flex justify-center items-center">
@@ -44,7 +45,7 @@ const Home = () => {
                     {/* <div className="aspect-square rounded-lg w-fill">
                         <img src={Img} className="object-cover" alt="Image" />
                     </div> */}
-                    <div className="w-full carousel rounded-box">
+                    <div className="w-full carousel aspect-[4/5] rounded-box">
                         <div className="carousel-item w-full">
                             <img
                                 src="https://img.daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.jpg"
@@ -101,7 +102,7 @@ const Home = () => {
                     </div>
                 </div>
             </div>
-            <div className="container w-screen mb-5 border-[1px] rounded-xl border-primary-content md:max-w-xl">
+            <div className="container w-screen border-[1px] rounded-xl border-primary-content md:max-w-xl">
                 <div className="flex flex-col m-10">
                     <div className="flex flex-row mb-3">
                         <div className="avatar flex justify-center items-center">

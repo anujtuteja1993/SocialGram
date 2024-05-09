@@ -5,7 +5,7 @@ import {
     BookmarkIcon as SavedSolid,
     SquaresPlusIcon as CreatePostSolid,
     RectangleStackIcon as ExploreSolid,
-} from "@heroicons/react/20/solid";
+} from "@heroicons/react/24/solid";
 import {
     BookmarkIcon as SavedOutline,
     RectangleStackIcon as ExploreOutline,

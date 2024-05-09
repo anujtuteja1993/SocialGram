@@ -1,6 +1,6 @@
 import { NewUser } from "../../types/types";
 import { ID, Query } from "appwrite";
-import { account, appwriteConfig, avatars, databases } from "./config";
+import { account, appwriteConfig, avatars, databases, storage } from "./config";
 
 export const createNewUser = async (user: NewUser) => {
     try {
@@ -91,6 +91,20 @@ export const signOutAccount = async () => {
     try {
         const session = await account.deleteSession("current");
         return session;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const fileUpload = async (file: File) => {
+    try {
+        const upload = await storage.createFile(
+            appwriteConfig.storageId,
+            ID.unique(),
+            file
+        );
+        console.log(upload);
+        return upload;
     } catch (error) {
         console.log(error);
     }
