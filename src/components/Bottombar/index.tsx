@@ -1,5 +1,12 @@
-import { HomeIcon as HomeSolid } from "@heroicons/react/20/solid";
 import {
+    HomeIcon as HomeSolid,
+    BookmarkIcon as SavedSolid,
+    RectangleStackIcon as ExploreSolid,
+    SquaresPlusIcon as CreatePostSolid,
+    UserGroupIcon as PeopleSolid,
+} from "@heroicons/react/20/solid";
+import {
+    HomeIcon as HomeOutline,
     BookmarkIcon as SavedOutline,
     RectangleStackIcon as ExploreOutline,
     SquaresPlusIcon as CreatePostOutline,
@@ -15,27 +22,47 @@ const Bottombar = () => {
             <div className="flex flex-row w-screen h-auto justify-around">
                 <Link to="/">
                     <button className="h-[50px] w-[50px] inline-flex justify-center items-center rounded-lg transition hover:scale-110 active:scale-90">
-                        <HomeSolid className="h-[30px] w-[30px]" />
+                        {location.pathname === "/" ? (
+                            <HomeSolid className="h-[30px] w-[30px]" />
+                        ) : (
+                            <HomeOutline className="h-[30px] w-[30px]" />
+                        )}
                     </button>
                 </Link>
                 <Link to="/people">
                     <button className="h-[50px] w-[50px] inline-flex justify-center items-center rounded-lg transition hover:scale-110 active:scale-90">
-                        <PeopleOutline className="h-[30px] w-[30px]" />
+                        {location.pathname === "/people" ? (
+                            <PeopleSolid className="h-[30px] w-[30px]" />
+                        ) : (
+                            <PeopleOutline className="h-[30px] w-[30px]" />
+                        )}
                     </button>
                 </Link>
                 <Link to="/explore">
                     <button className="h-[50px] w-[50px] inline-flex justify-center items-center rounded-lg transition hover:scale-110 active:scale-90">
-                        <ExploreOutline className="h-[30px] w-[30px]" />
+                        {location.pathname === "/explore" ? (
+                            <ExploreSolid className="h-[30px] w-[30px]" />
+                        ) : (
+                            <ExploreOutline className="h-[30px] w-[30px]" />
+                        )}
                     </button>
                 </Link>
                 <Link to="/saved">
                     <button className="h-[50px] w-[50px] inline-flex justify-center items-center rounded-lg transition hover:scale-110 active:scale-90">
-                        <SavedOutline className="h-[30px] w-[30px]" />
+                        {location.pathname === "/saved" ? (
+                            <SavedSolid className="h-[30px] w-[30px]" />
+                        ) : (
+                            <SavedOutline className="h-[30px] w-[30px]" />
+                        )}
                     </button>
                 </Link>
                 <Link to="/create">
                     <button className="h-[50px] w-[50px] inline-flex justify-center items-center rounded-lg transition hover:scale-110 active:scale-90">
-                        <CreatePostOutline className="h-[30px] w-[30px]" />
+                        {location.pathname === "/create" ? (
+                            <CreatePostSolid className="h-[30px] w-[30px]" />
+                        ) : (
+                            <CreatePostOutline className="h-[30px] w-[30px]" />
+                        )}
                     </button>
                 </Link>
                 <Link
