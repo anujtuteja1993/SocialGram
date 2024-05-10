@@ -1,21 +1,29 @@
+//Need to implement scrolling with buttons for Carousel and Separating the carousel component.
+
 import { PhotoIcon } from "@heroicons/react/24/outline";
 import { SetStateAction, useCallback, useState } from "react";
 import { FileWithPath, useDropzone } from "react-dropzone";
 import Carousel from "../Carousel/Index";
 
-const PhotoUploader = () => {
-    const [files, setFiles] = useState<File[]>([]);
+type PhotoUploaderProps = {
+    files: File[];
+    setFiles: React.Dispatch<React.SetStateAction<FileWithPath[]>>;
+};
+
+const PhotoUploader = ({ files, setFiles }: PhotoUploaderProps) => {
     const [fileUrl, setFileUrl] = useState<string[]>([]);
 
-    const onDrop = useCallback((acceptedFiles: FileWithPath[]) => {
-        setFiles(acceptedFiles);
-        const newArray: SetStateAction<string[]> = [];
-        acceptedFiles.forEach((item) => {
-            newArray.push(URL.createObjectURL(item));
-        });
-        setFileUrl(newArray);
-        console.log(newArray);
-    }, []);
+    const onDrop = useCallback(
+        (acceptedFiles: FileWithPath[]) => {
+            setFiles(acceptedFiles);
+            const newArray: SetStateAction<string[]> = [];
+            acceptedFiles.forEach((item) => {
+                newArray.push(URL.createObjectURL(item));
+            });
+            setFileUrl(newArray);
+        },
+        [files]
+    );
 
     const { acceptedFiles, getRootProps, getInputProps, isDragActive } =
         useDropzone({
@@ -39,9 +47,9 @@ const PhotoUploader = () => {
                         )}
                     </div>
                 ) : (
-                    <div className="w-full carousel border-[1px] rounded-box input-bordered">
-                        {fileUrl.map((fileUrl) => (
-                            <Carousel fileUrl={fileUrl} key={fileUrl} />
+                    <div className="w-full carousel border-[1px] rounded-box border-primary-content">
+                        {fileUrl.map((fileUrl, i) => (
+                            <Carousel fileUrl={fileUrl} key={i} id={i + 1} />
                         ))}
                     </div>
                 )}

@@ -55,7 +55,6 @@ const SignUp = () => {
         }
         const isUserLoggedIn = await checkCurrentUser();
         if (isUserLoggedIn) {
-            console.log("isUserLoggedin Should navigate");
             navigate("/");
         } else {
             toast("Sign up failed", {

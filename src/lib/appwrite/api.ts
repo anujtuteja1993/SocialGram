@@ -1,4 +1,4 @@
-import { NewUser } from "../../types/types";
+import { NewPost, NewUser } from "../../types/types";
 import { ID, Query } from "appwrite";
 import { account, appwriteConfig, avatars, databases, storage } from "./config";
 
@@ -96,15 +96,53 @@ export const signOutAccount = async () => {
     }
 };
 
-export const fileUpload = async (file: File) => {
+export const addPostToDB = async (post: {
+    creator: string;
+    caption: string;
+    hashtags: string[];
+    imgUrl: URL;
+    imgId: string;
+    location: string;
+}) => {
+    try {
+        const newPostDB = await databases.createDocument(
+            appwriteConfig.databaseId,
+            appwriteConfig.postsCollectionId,
+            ID.unique(),
+            post
+        );
+        return newPostDB;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const createNewPost = async (post: NewPost) => {
     try {
         const upload = await storage.createFile(
             appwriteConfig.storageId,
             ID.unique(),
-            file
+            post.file[0]
         );
-        console.log(upload);
-        return upload;
+        if (!upload) {
+            throw Error;
+        }
+
+        const result = storage.getFileView(
+            appwriteConfig.storageId,
+            upload.$id
+        );
+
+        const newPostDB = await addPostToDB({
+            creator: post.userId,
+            caption: post.caption,
+            hashtags: post.hashtags,
+            imgUrl: result,
+            imgId: upload.$id,
+            location: post.location,
+        });
+        console.log(newPostDB);
+        return newPostDB;
     } catch (error) {
         console.log(error);
     }

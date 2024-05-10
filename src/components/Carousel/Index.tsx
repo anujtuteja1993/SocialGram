@@ -1,10 +1,11 @@
 type CarouselProps = {
     fileUrl: string;
+    id: number;
 };
 
-const Carousel = ({ fileUrl }: CarouselProps) => {
+const Carousel = ({ fileUrl, id }: CarouselProps) => {
     return (
-        <div className="carousel-item w-full">
+        <div id={"img" + id} className="carousel-item w-full">
             <img
                 src={fileUrl}
                 className="w-full object-contain"

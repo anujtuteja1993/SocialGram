@@ -23,3 +23,16 @@ export const SignInValidation = z.object({
         .string()
         .min(8, { message: "The password needs to be atleast 8 characters" }),
 });
+
+export const PostValidation = z.object({
+    file: z.custom<File[]>(),
+    caption: z
+        .string()
+        .min(5, { message: "The caption needs to be atleast 5 characters" })
+        .max(2200),
+    hashtags: z.string({ message: "Atleast one tag is required" }),
+    location: z
+        .string()
+        .min(2, { message: "Please enter a valid location" })
+        .max(100),
+});

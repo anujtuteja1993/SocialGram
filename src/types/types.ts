@@ -21,3 +21,11 @@ export type UserContextType = {
     setIsUserAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
     checkCurrentUser: Function;
 };
+
+export type NewPost = {
+    userId: string;
+    file: File[];
+    caption: string;
+    hashtags: string[];
+    location: string;
+};
