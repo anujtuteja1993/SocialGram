@@ -128,20 +128,33 @@ export const createNewPost = async (post: NewPost) => {
             throw Error;
         }
 
-        const result = storage.getFileView(
+        const imgView = storage.getFileView(
             appwriteConfig.storageId,
             upload.$id
         );
+
+        if (!imgView) {
+            try {
+                await storage.deleteFile(appwriteConfig.storageId, upload.$id);
+                return true;
+            } catch (error) {
+                console.log(error);
+            }
+            throw Error;
+        }
 
         const newPostDB = await addPostToDB({
             creator: post.userId,
             caption: post.caption,
             hashtags: post.hashtags,
-            imgUrl: result,
+            imgUrl: imgView,
             imgId: upload.$id,
             location: post.location,
         });
-        console.log(newPostDB);
+
+        if (!newPostDB) {
+            await storage.deleteFile(appwriteConfig.storageId, upload.$id);
+        }
         return newPostDB;
     } catch (error) {
         console.log(error);
