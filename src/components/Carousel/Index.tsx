@@ -4,7 +4,7 @@ type CarouselProps = {
 
 const Carousel = ({ imgUrls }: CarouselProps) => {
     return (
-        <div className="w-full carousel border-[1px] rounded-box border-primary-content">
+        <div className="w-full carousel border-[1px] aspect-[4/5] rounded-box border-primary-content">
             {imgUrls.map((imgUrl, i) => (
                 <div
                     id={"img" + (i + 1)}

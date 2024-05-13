@@ -8,6 +8,7 @@ import { NewUser } from "../../types/types";
 import {
     createNewPost,
     createNewUser,
+    getRecentPosts,
     signInAccount,
     signOutAccount,
 } from "../appwrite/api";
@@ -34,5 +35,12 @@ export const useSignOutAccount = () => {
 export const useCreateNewPost = () => {
     return useMutation({
         mutationFn: createNewPost,
+    });
+};
+
+export const useGetRecentPosts = () => {
+    return useQuery({
+        queryKey: [],
+        queryFn: getRecentPosts,
     });
 };

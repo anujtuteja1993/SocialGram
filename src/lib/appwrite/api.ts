@@ -160,3 +160,29 @@ export const createNewPost = async (post: NewPost) => {
         console.log(error);
     }
 };
+
+export const getRecentPosts = async () => {
+    try {
+        const recentPosts = await databases.listDocuments(
+            appwriteConfig.databaseId,
+            appwriteConfig.postsCollectionId,
+            [Query.orderDesc("$createdAt"), Query.limit(10)]
+        );
+        return recentPosts;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+// export const getUserById = async (userId: string) => {
+//     try {
+//         const user = await databases.listDocuments(
+//             appwriteConfig.databaseId,
+//             appwriteConfig.usersCollectionId,
+//             [Query.equal("userId", userId)]
+//         );
+//         return user;
+//     } catch (error) {
+//         console.log(error);
+//     }
+// };
