@@ -7,9 +7,9 @@ import { z } from "zod";
 //import { useState } from "react";
 import { PostValidation } from "../../../lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createNewPost } from "../../../lib/appwrite/api";
 import { useUserContext } from "../../../contexts/userContext";
 import { useState } from "react";
+import { useCreateNewPost } from "../../../lib/react-query/queriesAndMutations";
 
 const Create = () => {
     const [files, setFiles] = useState<File[]>([]);
@@ -24,6 +24,7 @@ const Create = () => {
         },
     });
     const { user } = useUserContext();
+    const { mutateAsync: createNewPost } = useCreateNewPost();
 
     const splitHashtagsToArray = (hashtags: string) => {
         const hashTagsArray = hashtags.split(" ");

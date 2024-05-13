@@ -25,10 +25,14 @@ const PhotoUploader = ({ files, setFiles }: PhotoUploaderProps) => {
         [files]
     );
 
-    const { acceptedFiles, getRootProps, getInputProps, isDragActive } =
-        useDropzone({
-            onDrop,
-        });
+    const {
+        acceptedFiles,
+        getRootProps,
+        getInputProps,
+        // isDragActive
+    } = useDropzone({
+        onDrop,
+    });
 
     return (
         <>
@@ -40,18 +44,16 @@ const PhotoUploader = ({ files, setFiles }: PhotoUploaderProps) => {
                     >
                         <PhotoIcon className="h-[50px] w-[50px]" />
                         <input {...getInputProps()} />
-                        {isDragActive ? (
+                        {/* {isDragActive ? (
                             <p>Drop the files here ...</p>
-                        ) : (
-                            <p>Drag Photos here or click to Browse</p>
-                        )}
+                        ) : ( */}
+                        <p>Drag Photos here or click to Browse</p>
+                        {/* )} */}
                     </div>
                 ) : (
-                    <div className="w-full carousel border-[1px] rounded-box border-primary-content">
-                        {fileUrl.map((fileUrl, i) => (
-                            <Carousel fileUrl={fileUrl} key={i} id={i + 1} />
-                        ))}
-                    </div>
+                    <>
+                        <Carousel imgUrls={fileUrl} />
+                    </>
                 )}
             </div>
         </>
