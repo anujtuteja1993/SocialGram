@@ -10,7 +10,7 @@ export const createNewUser = async (user: NewUser) => {
             user.password,
             user.name
         );
-
+        console.log(newAccount);
         if (!newAccount) {
             throw Error;
         }
@@ -24,7 +24,7 @@ export const createNewUser = async (user: NewUser) => {
             username: user.username,
             imgUrl: avatarUrl,
         });
-
+        console.log(newAccountDB);
         return newAccountDB;
     } catch (error) {
         return error;
@@ -174,15 +174,66 @@ export const getRecentPosts = async () => {
     }
 };
 
-// export const getUserById = async (userId: string) => {
-//     try {
-//         const user = await databases.listDocuments(
-//             appwriteConfig.databaseId,
-//             appwriteConfig.usersCollectionId,
-//             [Query.equal("userId", userId)]
-//         );
-//         return user;
-//     } catch (error) {
-//         console.log(error);
-//     }
-// };
+export const getUserById = async (userId: string) => {
+    try {
+        const user = await databases.listDocuments(
+            appwriteConfig.databaseId,
+            appwriteConfig.usersCollectionId,
+            [Query.equal("userId", userId)]
+        );
+        console.log(user);
+        return user;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const likePost = async (postId: string, likesArray: string[]) => {
+    try {
+        const like = await databases.updateDocument(
+            appwriteConfig.databaseId,
+            appwriteConfig.postsCollectionId,
+            postId,
+            { likes: likesArray }
+        );
+
+        console.log(like);
+        return like;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const savePost = async (userId: string, postId: string) => {
+    try {
+        const save = await databases.createDocument(
+            appwriteConfig.databaseId,
+            appwriteConfig.savesCollectionId,
+            ID.unique(),
+            {
+                user: userId,
+                post: postId,
+            }
+        );
+
+        console.log(save);
+        return save;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const unSavePost = async (saveId: string) => {
+    try {
+        const save = await databases.deleteDocument(
+            appwriteConfig.databaseId,
+            appwriteConfig.savesCollectionId,
+            saveId
+        );
+
+        console.log(save);
+        return save;
+    } catch (error) {
+        console.log(error);
+    }
+};
