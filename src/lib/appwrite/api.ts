@@ -236,3 +236,17 @@ export const unSavePost = async (saveId: string) => {
         console.log(error);
     }
 };
+
+export const getPostById = async (postId: string) => {
+    try {
+        const post = await databases.listDocuments(
+            appwriteConfig.databaseId,
+            appwriteConfig.postsCollectionId,
+            [Query.equal("$id", postId)]
+        );
+
+        return post.documents[0];
+    } catch (error) {
+        console.log(error);
+    }
+};

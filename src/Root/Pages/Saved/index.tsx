@@ -6,10 +6,17 @@ import { Models } from "appwrite";
 const Saved = () => {
     const { data: user } = useGetCurrentUser();
 
-    const savedPosts = user?.save.map(
-        (a: { post: Models.Document[] }) => a.post
-    );
+    console.log(user?.save);
 
+    // const savedPosts = user?.save
+    //     .map((saved: { post: Models.Document[] }) => saved.post)
+    //     .reverse();
+
+    const savedPostsIds = user?.save
+        .map((saved: Models.Document) => saved.post.$id)
+        .reverse();
+
+    // console.log(test);
     return (
         <div className="flex flex-col gap-10 mt-20 items-center">
             <div className="flex gap-1 items-center">
@@ -17,9 +24,9 @@ const Saved = () => {
                 <h1 className="text-2xl font-semibold md:text-3xl">Saved</h1>
             </div>
             {!user ? (
-                <span className="loading loading-ball loading-md"></span>
+                <span className="loading loading-ball loading-md">test</span>
             ) : (
-                <PostGallery posts={savedPosts} />
+                <PostGallery postIds={savedPostsIds} />
             )}
         </div>
     );

@@ -3,12 +3,14 @@ import {
     useInfiniteQuery,
     useMutation,
     useQueryClient,
+    useQueries,
 } from "@tanstack/react-query";
 import { NewUser } from "../../types/types";
 import {
     createNewPost,
     createNewUser,
     getCurrentUser,
+    getPostById,
     getRecentPosts,
     getUserById,
     likePost,
@@ -67,10 +69,14 @@ export const useLikePost = () => {
             postId: string;
             likesArray: string[];
         }) => likePost(postId, likesArray),
-        onSuccess: () =>
+        onSuccess: () => {
             queryClient.invalidateQueries({
                 queryKey: ["getCurrentUser"],
-            }),
+            });
+            queryClient.invalidateQueries({
+                queryKey: ["getRecentPosts"],
+            });
+        },
     });
 };
 
@@ -99,7 +105,38 @@ export const useUnsavePost = () => {
 
 export const useGetUserById = (userId: string) => {
     return useQuery({
-        queryKey: [getCurrentUser],
+        queryKey: ["getCurrentUserByID"],
         queryFn: () => getUserById(userId),
     });
 };
+
+export const useGetPostById = (postId: string) => {
+    return useQuery({
+        queryKey: ["getPostById", postId],
+        queryFn: () => getPostById(postId),
+    });
+};
+
+export const useGetPostsbyIds = (postsIds: string[]) => {
+    return useQueries({
+        queries: postsIds?.map((id: string) => ({
+            queryKey: ["getPostsByIds", id],
+            queryFn: () => getPostById(id),
+        })),
+        combine: (posts) => {
+            return {
+                data: posts.map((post) => post.data),
+                pending: posts.some((post) => post.isPending),
+            };
+        },
+    });
+};
+
+// export const useGetPostsbyIds = (postsIds: string[]) => {
+//     return useQueries({
+//         queries: postsIds?.map((id: string) => ({
+//             queryKey: ["getPostsByIds", id],
+//             queryFn: () => getPostById(id),
+//         })),
+//     });
+// };

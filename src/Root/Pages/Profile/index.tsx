@@ -8,6 +8,10 @@ const Profile = () => {
     const { id } = useParams();
     const { data: user, isPending: isUserLoading } = useGetUserById(id || "");
     const { user: currentUser } = useUserContext();
+    console.log(user);
+
+    const userPostIds = user?.posts.map((post: { $id: string }) => post.$id);
+
     console.log(currentUser);
 
     return (
@@ -41,7 +45,7 @@ const Profile = () => {
                                 Posts
                             </h1>
                         </div>
-                        <PostGallery posts={user?.posts} />
+                        <PostGallery postIds={userPostIds} />
                     </div>
                 </>
             )}
