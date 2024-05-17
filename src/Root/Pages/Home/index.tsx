@@ -3,7 +3,7 @@ import PostCard from "../../../components/PostCard";
 import { useGetRecentPosts } from "../../../lib/react-query/queriesAndMutations";
 
 const Home = () => {
-    const { data: posts, isPending } = useGetRecentPosts();
+    const { data: posts, isPending: isPostLoading } = useGetRecentPosts();
 
     return (
         <div className="flex flex-col mt-20 gap-5 items-center">
@@ -12,8 +12,8 @@ const Home = () => {
                 <h1 className="text-2xl font-semibold md:text-3xl">Home</h1>
             </div>
             <>
-                {isPending ? (
-                    <p>Loading</p>
+                {isPostLoading ? (
+                    <span className="loading loading-ball loading-md"></span>
                 ) : (
                     posts?.documents.map((post, i) => (
                         <PostCard post={post} key={i} />

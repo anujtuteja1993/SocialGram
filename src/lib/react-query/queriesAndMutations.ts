@@ -10,6 +10,7 @@ import {
     createNewUser,
     getCurrentUser,
     getRecentPosts,
+    getUserById,
     likePost,
     savePost,
     signInAccount,
@@ -93,5 +94,12 @@ export const useUnsavePost = () => {
             queryClient.invalidateQueries({
                 queryKey: ["getCurrentUser"],
             }),
+    });
+};
+
+export const useGetUserById = (userId: string) => {
+    return useQuery({
+        queryKey: [getCurrentUser],
+        queryFn: () => getUserById(userId),
     });
 };

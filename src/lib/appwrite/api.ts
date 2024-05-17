@@ -179,10 +179,9 @@ export const getUserById = async (userId: string) => {
         const user = await databases.listDocuments(
             appwriteConfig.databaseId,
             appwriteConfig.usersCollectionId,
-            [Query.equal("userId", userId)]
+            [Query.equal("$id", userId)]
         );
-        console.log(user);
-        return user;
+        return user.documents[0];
     } catch (error) {
         console.log(error);
     }

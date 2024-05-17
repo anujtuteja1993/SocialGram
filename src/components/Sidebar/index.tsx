@@ -95,7 +95,13 @@ const Sidebar = () => {
             </Link>
             <Link to={`/profile/${user.id}`} className="mt-5">
                 <div className="tooltip-right tooltip" data-tip="View Profile">
-                    <div className="avatar flex justify-center items-center transition duration-200 hover:scale-110 active:scale-90">
+                    <div
+                        className={`avatar flex justify-center items-center transition duration-200 hover:scale-110 active:scale-90 rounded-full ${
+                            location.pathname.indexOf("/profile/") === 0
+                                ? "ring ring-primary ring-offset-base-100 ring-offset-2 "
+                                : ""
+                        }`}
+                    >
                         <div className="w-10 rounded-full cursor-pointer">
                             <img src={user.imgUrl} alt="logo" />
                         </div>

@@ -9,7 +9,6 @@ import {
 
 import { Models } from "appwrite";
 import { useEffect, useState } from "react";
-//import { likePost, savePost, unSavePost } from "../../lib/appwrite/api";
 import {
     useGetCurrentUser,
     useLikePost,
@@ -29,12 +28,12 @@ const LikeSavePost = ({ post, userId }: LikeSavePostProps) => {
     );
     const [saved, setSaved] = useState(false);
 
-    const { data: currentUser, isPending: isSaveStatusLoading } =
-        useGetCurrentUser();
+    const { data: currentUser } = useGetCurrentUser();
 
     const { mutateAsync: likePost } = useLikePost();
-    const { mutateAsync: savePost } = useSavePost();
-    const { mutateAsync: unSavePost } = useUnsavePost();
+    const { mutateAsync: savePost, isPending: isSavingPost } = useSavePost();
+    const { mutateAsync: unSavePost, isPending: isUnsavingPost } =
+        useUnsavePost();
 
     //console.log(currentUser);
 
@@ -60,7 +59,6 @@ const LikeSavePost = ({ post, userId }: LikeSavePostProps) => {
 
     useEffect(() => {
         setSaved(savedPost ? true : false);
-        console.log(currentUser?.save);
     }, [currentUser]);
 
     const handleLikeClick = () => {
@@ -113,31 +111,31 @@ const LikeSavePost = ({ post, userId }: LikeSavePostProps) => {
         }
     };
 
-    console.log(isSaveStatusLoading);
-
     return (
-        <div className="flex justify-between m-1">
+        <div className="flex justify-between m-2">
             <div className="flex flex-row items-center gap-1">
                 <button onClick={handleLikeClick}>
                     {likes.find((id: string) => id === userId) ? (
-                        <LikedSolid className="h-[30px] w-[30px] md:h-[35px] md:w-[35px] cursor-pointer transition duration-200 hover:scale-110 active:scale-90" />
+                        <LikedSolid className="h-[30px] w-[30px] md:h-[35px] md:w-[35px] cursor-pointer transition duration-200 hover:scale-110 active:scale-90 fill-red-500" />
                     ) : (
                         <LikedOutline className="h-[30px] w-[30px] md:h-[35px] md:w-[35px] cursor-pointer transition duration-200 hover:scale-110 active:scale-90" />
                     )}
                 </button>
                 <p className="text-xl md:text-2xl">{likes.length}</p>
             </div>
-            {isSaveStatusLoading ? (
-                <span className="loading loading-bars loading-md"></span>
-            ) : (
-                <button onClick={handleSaveClick}>
-                    {saved ? (
-                        <SavedSolid className="h-[30px] w-[30px] md:h-[35px] md:w-[35px] cursor-pointer transition duration-200 hover:scale-110 active:scale-90" />
-                    ) : (
-                        <SavedOutline className="h-[30px] w-[30px] md:h-[35px] md:w-[35px] cursor-pointer transition duration-200 hover:scale-110 active:scale-90" />
-                    )}
-                </button>
-            )}
+            <div className="flex justify-center h-[30px] w-[30px] md:h-[35px] md:w-[35px]">
+                {isSavingPost || isUnsavingPost ? (
+                    <span className="loading loading-bars"></span>
+                ) : (
+                    <button onClick={handleSaveClick}>
+                        {saved ? (
+                            <SavedSolid className="h-full w-full cursor-pointer transition duration-200 hover:scale-110 active:scale-90" />
+                        ) : (
+                            <SavedOutline className="h-full w-full cursor-pointer transition duration-200 hover:scale-110 active:scale-90" />
+                        )}
+                    </button>
+                )}
+            </div>
         </div>
     );
 };
