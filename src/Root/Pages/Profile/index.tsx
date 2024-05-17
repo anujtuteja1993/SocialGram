@@ -6,17 +6,16 @@ import { Squares2X2Icon } from "@heroicons/react/24/solid";
 
 const Profile = () => {
     const { id } = useParams();
-    const { data: user, isPending: isUserLoading } = useGetUserById(id || "");
+    const { data: user, isFetching: isUserFetching } = useGetUserById(id || "");
     const { user: currentUser } = useUserContext();
-    console.log(user);
 
     const userPostIds = user?.posts.map((post: { $id: string }) => post.$id);
 
-    console.log(currentUser);
+    // console.log(currentUser);
 
     return (
         <div className="flex flex-col mt-20 gap-20">
-            {isUserLoading ? (
+            {isUserFetching ? (
                 <p>Loading...</p>
             ) : (
                 <>

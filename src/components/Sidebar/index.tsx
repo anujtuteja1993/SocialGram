@@ -97,7 +97,8 @@ const Sidebar = () => {
                 <div className="tooltip-right tooltip" data-tip="View Profile">
                     <div
                         className={`avatar flex justify-center items-center transition duration-200 hover:scale-110 active:scale-90 rounded-full ${
-                            location.pathname.indexOf("/profile/") === 0
+                            location.pathname.indexOf(`/profile/${user.id}`) ===
+                            0
                                 ? "ring ring-primary ring-offset-base-100 ring-offset-2 "
                                 : ""
                         }`}

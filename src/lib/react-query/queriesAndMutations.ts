@@ -105,8 +105,10 @@ export const useUnsavePost = () => {
 
 export const useGetUserById = (userId: string) => {
     return useQuery({
-        queryKey: ["getCurrentUserByID"],
+        queryKey: ["getUserByID"],
         queryFn: () => getUserById(userId),
+        enabled: !!userId,
+        refetchOnWindowFocus: false,
     });
 };
 

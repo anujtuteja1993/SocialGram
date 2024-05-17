@@ -1,6 +1,7 @@
 import { HomeIcon as HomeSolid } from "@heroicons/react/24/solid";
 import PostCard from "../../../components/PostCard";
 import { useGetRecentPosts } from "../../../lib/react-query/queriesAndMutations";
+import HomeSkeleton from "./HomeSkeleton";
 
 const Home = () => {
     const { data: posts, isPending: isPostLoading } = useGetRecentPosts();
@@ -13,7 +14,7 @@ const Home = () => {
             </div>
             <>
                 {isPostLoading ? (
-                    <span className="loading loading-ball loading-md"></span>
+                    <HomeSkeleton />
                 ) : (
                     posts?.documents.map((post, i) => (
                         <PostCard post={post} key={i} />
