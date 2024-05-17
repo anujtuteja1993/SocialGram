@@ -6,11 +6,9 @@ import { Squares2X2Icon } from "@heroicons/react/24/solid";
 
 const Profile = () => {
     const { id } = useParams();
-
     const { data: user, isPending: isUserLoading } = useGetUserById(id || "");
-
-    //const { user } = useUserContext();
-    console.log(user?.posts);
+    const { user: currentUser } = useUserContext();
+    console.log(currentUser);
 
     return (
         <div className="flex flex-col mt-20 gap-20">
