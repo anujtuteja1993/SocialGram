@@ -14,7 +14,10 @@ const Home = () => {
             </div>
             <>
                 {isPostLoading ? (
-                    <HomeSkeleton />
+                    <>
+                        <HomeSkeleton />
+                        <HomeSkeleton />
+                    </>
                 ) : (
                     posts?.documents.map((post, i) => (
                         <PostCard post={post} key={i} />

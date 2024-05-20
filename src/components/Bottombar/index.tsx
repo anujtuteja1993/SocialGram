@@ -66,11 +66,25 @@ const Bottombar = () => {
                     </button>
                 </Link>
                 <Link
+                    className="flex avatar items-center justify-center"
                     to={`/profile/${user.id}`}
-                    className="avatar h-[50px] w-[50px] items-center justify-center rounded-lg transition hover:scale-110 active:scale-90"
+                    //className="avatar h-[50px] w-[50px] items-center justify-center rounded-lg transition hover:scale-110 active:scale-90"
                 >
-                    <div className="w-8 rounded-full cursor-pointer">
-                        <img src={user.imgUrl} alt="logo" />
+                    <div
+                        className={`h-8 w-8 cursor-pointer transition duration-200 hover:scale-110 active:scale-90 rounded-full ${
+                            location.pathname.indexOf(`/profile/${user.id}`) ===
+                            0
+                                ? "ring ring-primary ring-offset-base-100 ring-offset-1"
+                                : ""
+                        }`}
+                    >
+                        {/* <div className="w-8 rounded-full cursor-pointer"> */}
+                        {!user.imgUrl ? (
+                            <div className="skeleton w-8 h-8 rounded-full shrink-0"></div>
+                        ) : (
+                            <img src={user.imgUrl} alt="logo" />
+                        )}
+                        {/* </div> */}
                     </div>
                 </Link>
             </div>

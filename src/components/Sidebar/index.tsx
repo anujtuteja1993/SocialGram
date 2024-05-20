@@ -93,7 +93,7 @@ const Sidebar = () => {
                     </button>
                 </div>
             </Link>
-            <Link to={`/profile/${user.id}`} className="mt-5">
+            <Link to={`/profile/${user?.id}`} className="mt-5">
                 <div className="tooltip-right tooltip" data-tip="View Profile">
                     <div
                         className={`avatar flex justify-center items-center transition duration-200 hover:scale-110 active:scale-90 rounded-full ${
@@ -104,7 +104,11 @@ const Sidebar = () => {
                         }`}
                     >
                         <div className="w-10 rounded-full cursor-pointer">
-                            <img src={user.imgUrl} alt="logo" />
+                            {!user.imgUrl ? (
+                                <div className="skeleton w-10 h-10 rounded-full shrink-0"></div>
+                            ) : (
+                                <img src={user.imgUrl} alt="logo" />
+                            )}
                         </div>
                     </div>
                 </div>

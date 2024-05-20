@@ -6,7 +6,7 @@ import { Models } from "appwrite";
 const Saved = () => {
     const { data: user } = useGetCurrentUser();
 
-    console.log(user?.save);
+    // console.log(user?.save);
 
     // const savedPosts = user?.save
     //     .map((saved: { post: Models.Document[] }) => saved.post)
@@ -24,7 +24,7 @@ const Saved = () => {
                 <h1 className="text-2xl font-semibold md:text-3xl">Saved</h1>
             </div>
             {!user ? (
-                <span className="loading loading-ball loading-md">test</span>
+                <span className="loading loading-ring loading-lg"></span>
             ) : (
                 <PostGallery postIds={savedPostsIds} />
             )}

@@ -19,7 +19,7 @@ const PostCard = ({ post }: PostCardProps) => {
     };
 
     return (
-        <div className="container w-screen border-[1px] rounded-xl border-primary-content md:max-w-xl">
+        <div className="container w-screen md:border-[1px] rounded-xl border-primary-content md:max-w-xl">
             <div className="flex flex-col m-10">
                 <div className="flex flex-row mb-3">
                     <Link

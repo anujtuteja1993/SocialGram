@@ -6,11 +6,11 @@ const PostGallery = ({ postIds }: { postIds: string[] }) => {
     const fetchedPosts = useGetPostsbyIds(postIds);
 
     return (
-        <div className="w-full grid grid-cols-3 gap-1 items-center px-1 md:px-12 max-w-7xl">
+        <>
             {fetchedPosts.pending ? (
-                <span className="loading loading-ball loading-md"></span>
+                <span className="loading loading-ring loading-lg"></span>
             ) : (
-                <>
+                <div className="w-full grid grid-cols-3 gap-1 items-center px-2 md:px-12 max-w-7xl">
                     {fetchedPosts?.data.map(
                         (fetched: Models.Document | undefined, i: number) => (
                             <div key={i} className="relative">
@@ -18,7 +18,7 @@ const PostGallery = ({ postIds }: { postIds: string[] }) => {
                                     className="aspect-square object-cover object-center"
                                     src={fetched?.imgUrl}
                                 />
-                                <div className="absolute top-0 left-0 w-full h-full hover:bg-black/50 text-white cursor-pointer opacity-0 hover:opacity-100 active:bg-black/80 ">
+                                <div className="absolute top-0 left-0 w-full h-full hover:bg-black/50 text-white cursor-pointer opacity-0 hover:opacity-100 active:bg-black/80">
                                     <div className="flex flex-row gap-1 justify-center items-center h-full">
                                         <HeartIcon className="h-[25px] w-[25px] md:h-[35px] md:w-[35px]" />
                                         {!fetched?.likes?.length ? (
@@ -35,9 +35,9 @@ const PostGallery = ({ postIds }: { postIds: string[] }) => {
                             </div>
                         )
                     )}
-                </>
+                </div>
             )}
-        </div>
+        </>
     );
 };
 
