@@ -13,7 +13,7 @@ const Topbar = () => {
     }, [isSuccess]);
 
     return (
-        <div className="flex justify-between w-full fixed top-0 bg-base-100 md:hidden">
+        <div className="flex justify-between w-full fixed top-0 z-10 bg-base-100 md:hidden">
             <div className="flex flex-row justify-center items-center ml-1">
                 <img src={logo} className="w-12 h-12 inline-block" alt="logo" />
                 <h1 className="font-bold text-xl">SocialGram</h1>

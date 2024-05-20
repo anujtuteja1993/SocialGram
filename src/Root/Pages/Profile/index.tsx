@@ -10,9 +10,11 @@ const Profile = () => {
     const { data: user, isFetching: isUserFetching } = useGetUserById(id || "");
     const { user: currentUser } = useUserContext();
 
-    const userPostIds = user?.posts.map((post: { $id: string }) => post.$id);
+    const userPostIds = user?.posts
+        .map((post: { $id: string }) => post.$id)
+        .reverse();
 
-    // console.log(currentUser);
+    console.log(currentUser);
 
     return (
         <>

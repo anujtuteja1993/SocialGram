@@ -38,28 +38,35 @@ const SignUp = () => {
             (newAccount =
                 "AppwriteException: A user with the same id, email, or phone already exists in this project.")
         ) {
-            toast("User Registeration failed", {
-                className: "custom-toast",
-                draggable: true,
-            });
+            toast.error(
+                "A user with the same username or email already exists",
+                {
+                    position: "top-center",
+                    draggable: true,
+                    theme: "dark",
+                }
+            );
+            return;
         }
         const session = await signInAccount({
             email: values.email,
             password: values.password,
         });
         if (!session) {
-            toast("Unable to create session", {
-                className: "custom-toast",
+            toast.error("Unable to create session", {
+                position: "top-center",
                 draggable: true,
+                theme: "dark",
             });
         }
         const isUserLoggedIn = await checkCurrentUser();
         if (isUserLoggedIn) {
             navigate("/");
         } else {
-            toast("Sign up failed", {
-                className: "custom-toast",
+            toast.error("Sign up Failed, please try again in a few minutes.", {
+                position: "top-center",
                 draggable: true,
+                theme: "dark",
             });
         }
     }

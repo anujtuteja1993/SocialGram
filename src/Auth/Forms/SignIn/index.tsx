@@ -35,7 +35,6 @@ const SignIn = () => {
         console.log(isUserLoggedIn);
 
         if (isUserLoggedIn) {
-            console.log("isUserLoggedin Should navigate");
             navigate("/");
         } else {
             toast.error(

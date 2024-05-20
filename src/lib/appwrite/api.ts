@@ -24,7 +24,7 @@ export const createNewUser = async (user: NewUser) => {
             username: user.username,
             imgUrl: avatarUrl,
         });
-        console.log(newAccountDB);
+        //console.log(newAccountDB);
         return newAccountDB;
     } catch (error) {
         return error;
