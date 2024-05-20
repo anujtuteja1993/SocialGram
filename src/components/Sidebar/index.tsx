@@ -32,7 +32,7 @@ const Sidebar = () => {
     const location = useLocation();
 
     return (
-        <div className="hidden md:flex flex-col w-[80px] h-screen items-center fixed left-0">
+        <div className="hidden md:flex flex-col w-[80px] h-screen items-center fixed left-0 z-10">
             <Link className="hidden md:block my-8" to={"/"}>
                 <button className="h-[50px] w-[50px]">
                     <img src={logo} alt="logo"></img>

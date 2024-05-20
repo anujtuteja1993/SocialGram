@@ -10,11 +10,17 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useUserContext } from "../../../contexts/userContext";
 import { useState } from "react";
 import { useCreateNewPost } from "../../../lib/react-query/queriesAndMutations";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const Create = () => {
     const [files, setFiles] = useState<File[]>([]);
 
-    const { handleSubmit, register } = useForm<z.infer<typeof PostValidation>>({
+    const {
+        handleSubmit,
+        register,
+        formState: { errors },
+    } = useForm<z.infer<typeof PostValidation>>({
         resolver: zodResolver(PostValidation),
         defaultValues: {
             file: [],
@@ -31,16 +37,43 @@ const Create = () => {
         return hashTagsArray;
     };
 
+    const navigate = useNavigate();
+
     const onSubmit = async (values: z.infer<typeof PostValidation>) => {
+        if (files.length === 0) {
+            return;
+        }
+        console.log("resetting?");
         const newPost = await createNewPost({
             ...values,
             hashtags: splitHashtagsToArray(values.hashtags),
             userId: user.id,
             file: files,
         });
-        console.log(files);
-        console.log(newPost);
+
+        if (!newPost) {
+            toast.error(
+                "There was an error creating the post. Please try again.",
+                {
+                    position: "top-center",
+                    draggable: true,
+                    theme: "dark",
+                }
+            );
+        }
+
+        toast.success("Post created successfully", {
+            position: "top-center",
+            draggable: true,
+            theme: "dark",
+        });
+        navigate("/");
+
         return newPost;
+    };
+
+    const handleCancel = () => {
+        window.location.reload();
     };
 
     return (
@@ -53,33 +86,139 @@ const Create = () => {
             </div>
             <form
                 onSubmit={handleSubmit(onSubmit)}
-                className="container w-screen mb-5 border-[1px] rounded-xl border-primary-content md:max-w-xl"
+                className="container w-screen mb-5 md:border-[1px] rounded-xl border-primary-content md:max-w-xl"
             >
-                <div className="flex flex-col m-10 gap-3 md:gap-5">
+                <div className="flex flex-col m-10 gap-1 md:gap-2">
                     <PhotoUploader files={files} setFiles={setFiles} />
-                    <textarea
-                        className="textarea textarea-bordered textarea-md w-full md:textarea-lg"
-                        placeholder="Caption"
-                        inputMode="text"
-                        {...register("caption")}
-                    />
-                    <textarea
-                        className="textarea textarea-bordered textarea-md w-full md:textarea-lg"
-                        placeholder="Tags"
-                        inputMode="text"
-                        {...register("hashtags")}
-                    ></textarea>
-                    <input
-                        type="text"
-                        placeholder="Location"
-                        className="input input-bordered input-md w-full md:input-lg"
-                        {...register("location")}
-                    />
+                    <div className="h-[20px]">
+                        {files.length < 1 && (
+                            <div className="flex flex-row ml-2 items-center">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="stroke-current shrink-0 h-4 w-4"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        stroke="rgb(239 68 68)"
+                                        d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+                                    />
+                                </svg>
+                                <p className="text-xs md:text-md text-red-500 ml-1">
+                                    Atleast 1 image is required
+                                </p>
+                            </div>
+                        )}
+                    </div>
+                    <div className="flex flex-col gap-1 md:gap-2">
+                        <textarea
+                            className={`textarea textarea-bordered textarea-md w-full md:textarea-lg ${
+                                errors.caption ? "textarea-error" : ""
+                            }`}
+                            placeholder="Caption"
+                            inputMode="text"
+                            {...register("caption")}
+                        />
+                        <div className="h-[20px]">
+                            {errors.caption && (
+                                <div className="flex flex-row ml-2 items-center">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        className="stroke-current shrink-0 h-4 w-4"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth="2"
+                                            stroke="rgb(239 68 68)"
+                                            d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+                                        />
+                                    </svg>
+                                    <p className="text-xs md:text-md text-red-500 ml-1">
+                                        {errors?.caption?.message}
+                                    </p>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                    <div className="flex flex-col gap-1 md:gap-2">
+                        <textarea
+                            className={`textarea textarea-bordered textarea-md w-full md:textarea-lg ${
+                                errors.hashtags ? "textarea-error" : ""
+                            }`}
+                            placeholder="Tags (Space separated)"
+                            inputMode="text"
+                            {...register("hashtags")}
+                        />
+                        <div className="h-[20px]">
+                            {errors.hashtags && (
+                                <div className="flex flex-row ml-2 items-center">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        className="stroke-current shrink-0 h-4 w-4"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth="2"
+                                            stroke="rgb(239 68 68)"
+                                            d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+                                        />
+                                    </svg>
+                                    <p className="text-xs md:text-md text-red-500 ml-1">
+                                        {errors?.hashtags?.message}
+                                    </p>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                    <div className="flex flex-col gap-1 md:gap-2">
+                        <input
+                            type="text"
+                            placeholder="Location"
+                            className={`input input-bordered input-md w-full md:input-lg ${
+                                errors.location ? "input-error" : ""
+                            }`}
+                            {...register("location")}
+                        />
+                        <div className="h-[20px]">
+                            {errors.location && (
+                                <div className="flex flex-row ml-2 items-center">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        className="stroke-current shrink-0 h-4 w-4"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth="2"
+                                            stroke="rgb(239 68 68)"
+                                            d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+                                        />
+                                    </svg>
+                                    <p className="text-xs md:text-md text-red-500 ml-1">
+                                        {errors?.location?.message}
+                                    </p>
+                                </div>
+                            )}
+                        </div>
+                    </div>
                     <div className="flex flex-row justify-between">
                         <button type="submit" className="btn w-[40%]">
                             Submit
                         </button>
-                        <button className="btn w-[40%]">Cancel</button>
+                        <button className="btn w-[40%]" onClick={handleCancel}>
+                            Cancel
+                        </button>
                     </div>
                 </div>
             </form>
