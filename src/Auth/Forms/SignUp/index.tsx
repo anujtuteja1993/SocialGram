@@ -35,8 +35,8 @@ const SignUp = () => {
     async function onSubmit(values: z.infer<typeof SignUpValidation>) {
         let newAccount: unknown = await createNewUser(values);
         if (
-            (newAccount =
-                "AppwriteException: A user with the same id, email, or phone already exists in this project.")
+            newAccount ==
+            "AppwriteException: A user with the same id, email, or phone already exists in this project."
         ) {
             toast.error(
                 "A user with the same username or email already exists",

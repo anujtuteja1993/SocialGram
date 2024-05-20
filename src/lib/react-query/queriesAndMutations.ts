@@ -1,6 +1,6 @@
 import {
     useQuery,
-    useInfiniteQuery,
+    // useInfiniteQuery,
     useMutation,
     useQueryClient,
     useQueries,
