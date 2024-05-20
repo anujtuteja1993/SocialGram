@@ -20,8 +20,9 @@ const SignIn = () => {
             password: "",
         },
     });
+
     const { mutateAsync: signInAccount } = useSignInAccount();
-    const { checkCurrentUser, isUserAuthenticated } = useUserContext();
+    const { checkCurrentUser } = useUserContext();
     const navigate = useNavigate();
 
     const onSubmit = async (values: z.infer<typeof SignInValidation>) => {
@@ -30,22 +31,24 @@ const SignIn = () => {
             password: values.password,
         });
 
-        if (!session) {
-            toast("Unable to create session", {
-                className: "custom-toast",
-                draggable: true,
-            });
-        }
         const isUserLoggedIn = await checkCurrentUser();
         console.log(isUserLoggedIn);
+
         if (isUserLoggedIn) {
             console.log("isUserLoggedin Should navigate");
             navigate("/");
         } else {
-            toast("Sign in failed", {
-                className: "custom-toast",
-                draggable: true,
-            });
+            toast.error(
+                `${session}` ===
+                    "AppwriteException: Invalid credentials. Please check the email and password."
+                    ? "Invalid credentials. Please check the email and password."
+                    : "Error Signing in. Try again in a few minutes.",
+                {
+                    position: "top-center",
+                    draggable: true,
+                    theme: "dark",
+                }
+            );
         }
     };
 
@@ -66,8 +69,14 @@ const SignIn = () => {
             </div>
             <div className="flex-col max-w-[300px] m-auto">
                 <div>
-                    <div className="flex flex-col mb-7">
-                        <label className="input input-bordered flex items-center gap-2">
+                    <div className="flex flex-col">
+                        <label
+                            className={
+                                errors.email
+                                    ? "input input-bordered input-error flex items-center gap-2"
+                                    : "input input-bordered flex items-center gap-2"
+                            }
+                        >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 16 16"
@@ -83,10 +92,33 @@ const SignIn = () => {
                                 placeholder="Email"
                             />
                         </label>
+                        <div className="h-[20px] mt-1">
+                            {errors.email && (
+                                <div className="flex flex-row ml-2 items-center">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        className="stroke-current shrink-0 h-4 w-4"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth="2"
+                                            stroke="rgb(239 68 68)"
+                                            d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+                                        />
+                                    </svg>
+                                    <p className="text-xs text-red-500 ml-1">
+                                        {errors?.email?.message}
+                                    </p>
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </div>
                 <div>
-                    <div className="flex flex-col mb-3">
+                    <div className="flex flex-col mb-5">
                         <label className="input input-bordered flex items-center gap-2">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -107,9 +139,32 @@ const SignIn = () => {
                                 placeholder="Password"
                             />
                         </label>
+                        <div className="h-[20px] mt-1">
+                            {errors.password && (
+                                <div className="flex flex-row ml-2 items-center">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        className="stroke-current shrink-0 h-4 w-4"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth="2"
+                                            stroke="rgb(239 68 68)"
+                                            d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+                                        />
+                                    </svg>
+                                    <p className="text-xs text-red-500 ml-1">
+                                        {errors?.password?.message}
+                                    </p>
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </div>
-                <div className="h-[20px] mb-3 opacity-0">
+                {/* <div className="h-[20px] mb-3 opacity-0">
                     <div className="flex flex-row justify-center items-center">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -129,7 +184,7 @@ const SignIn = () => {
                             The username of password is incorrect
                         </p>
                     </div>
-                </div>
+                </div> */}
                 <button type="submit" className="btn w-full py-4 relative">
                     Login
                 </button>

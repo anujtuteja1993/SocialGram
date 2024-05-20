@@ -1,8 +1,10 @@
 import { Outlet, Navigate } from "react-router-dom";
 import sideImg from "../assets/sideImg.jpg";
+import { useContext } from "react";
+import { UserContext } from "../contexts/userContext";
 
 const AuthLayout = () => {
-    const isUserAuthenticated = false;
+    const { isUserAuthenticated } = useContext(UserContext);
 
     return (
         <>

@@ -63,6 +63,7 @@ export const signInAccount = async (user: {
         return session;
     } catch (error) {
         console.log(error);
+        return error;
     }
 };
 
