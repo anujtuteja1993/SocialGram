@@ -10,7 +10,7 @@ const PostGallery = ({ postIds }: { postIds: string[] }) => {
             {fetchedPosts.pending ? (
                 <span className="loading loading-ring loading-lg"></span>
             ) : (
-                <div className="w-full grid grid-cols-3 gap-1 items-center px-2 md:px-12 max-w-7xl">
+                <div className="w-full grid grid-cols-3 gap-1 items-center px-2 mb-[50px] md:m-0 md:px-12 max-w-7xl">
                     {fetchedPosts?.data.map(
                         (fetched: Models.Document | undefined, i: number) => (
                             <div key={i} className="relative">
