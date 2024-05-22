@@ -62,7 +62,7 @@ const PostCard = ({ post }: PostCardProps) => {
                         <p key={i}>{"#" + hashtag} &nbsp;</p>
                     ))}
                 </div>
-                <Carousel imgUrls={[post.imgUrl]} />
+                <Carousel imgUrls={post.imgUrls} />
                 <LikeSavePost post={post} userId={user.id} />
             </div>
         </div>

@@ -101,8 +101,8 @@ export const addPostToDB = async (post: {
     creator: string;
     caption: string;
     hashtags: string[];
-    imgUrl: URL;
-    imgId: string;
+    imgUrls: URL[];
+    imgIds: string[];
     location: string;
 }) => {
     try {
@@ -120,45 +120,59 @@ export const addPostToDB = async (post: {
 
 export const createNewPost = async (post: NewPost) => {
     try {
-        const upload = await storage.createFile(
-            appwriteConfig.storageId,
-            ID.unique(),
-            post.file[0]
-        );
-        if (!upload) {
-            throw Error;
-        }
+        const imgViews: URL[] = [];
+        const imgIds: string[] = [];
 
-        const imgView = storage.getFilePreview(
-            appwriteConfig.storageId,
-            upload.$id,
-            0,
-            0,
-            undefined,
-            40
-        );
+        for (let i = 0; i < post.file.length; i++) {
+            const upload = await storage.createFile(
+                appwriteConfig.storageId,
+                ID.unique(),
+                post.file[i]
+            );
 
-        if (!imgView) {
-            try {
-                await storage.deleteFile(appwriteConfig.storageId, upload.$id);
-                return true;
-            } catch (error) {
-                console.log(error);
+            if (!upload) {
+                throw Error;
             }
-            throw Error;
+
+            const imgView = storage.getFilePreview(
+                appwriteConfig.storageId,
+                upload.$id,
+                0,
+                0,
+                undefined,
+                40
+            );
+
+            if (!imgView) {
+                try {
+                    await storage.deleteFile(
+                        appwriteConfig.storageId,
+                        upload.$id
+                    );
+                    return true;
+                } catch (error) {
+                    console.log(error);
+                }
+                throw Error;
+            }
+
+            imgViews.push(imgView);
+            imgIds.push(upload.$id);
         }
 
         const newPostDB = await addPostToDB({
             creator: post.userId,
             caption: post.caption,
             hashtags: post.hashtags,
-            imgUrl: imgView,
-            imgId: upload.$id,
+            imgUrls: imgViews,
+            imgIds: imgIds,
             location: post.location,
         });
 
         if (!newPostDB) {
-            await storage.deleteFile(appwriteConfig.storageId, upload.$id);
+            for (let i = 0; i < imgIds.length; i++) {
+                await storage.deleteFile(appwriteConfig.storageId, imgIds[i]);
+            }
         }
         return newPostDB;
     } catch (error) {
