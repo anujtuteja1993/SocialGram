@@ -129,9 +129,13 @@ export const createNewPost = async (post: NewPost) => {
             throw Error;
         }
 
-        const imgView = storage.getFileView(
+        const imgView = storage.getFilePreview(
             appwriteConfig.storageId,
-            upload.$id
+            upload.$id,
+            0,
+            0,
+            undefined,
+            40
         );
 
         if (!imgView) {

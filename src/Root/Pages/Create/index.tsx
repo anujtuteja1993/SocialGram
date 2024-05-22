@@ -43,7 +43,13 @@ const Create = () => {
         if (files.length === 0) {
             return;
         }
-        console.log("resetting?");
+
+        const postToastId = toast.loading("Creating Post. Please wait!", {
+            position: "top-center",
+            draggable: true,
+            theme: "dark",
+        });
+
         const newPost = await createNewPost({
             ...values,
             hashtags: splitHashtagsToArray(values.hashtags),
@@ -52,20 +58,22 @@ const Create = () => {
         });
 
         if (!newPost) {
-            toast.error(
-                "There was an error creating the post. Please try again.",
-                {
-                    position: "top-center",
-                    draggable: true,
-                    theme: "dark",
-                }
-            );
+            toast.update(postToastId, {
+                render: "There was an error creating the post. Please try again.",
+                type: "error",
+                autoClose: 3000,
+                closeButton: true,
+                isLoading: false,
+            });
+            return;
         }
 
-        toast.success("Post created successfully", {
-            position: "top-center",
-            draggable: true,
-            theme: "dark",
+        toast.update(postToastId, {
+            render: "Post created successfully!",
+            type: "success",
+            autoClose: 3000,
+            closeButton: true,
+            isLoading: false,
         });
         navigate("/");
 
@@ -216,7 +224,11 @@ const Create = () => {
                         <button type="submit" className="btn w-[40%]">
                             Submit
                         </button>
-                        <button className="btn w-[40%]" onClick={handleCancel}>
+                        <button
+                            type="button"
+                            className="btn w-[40%]"
+                            onClick={handleCancel}
+                        >
                             Cancel
                         </button>
                     </div>
