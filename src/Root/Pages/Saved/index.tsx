@@ -18,7 +18,7 @@ const Saved = () => {
 
     // console.log(test);
     return (
-        <div className="flex flex-col gap-10 mt-20 items-center">
+        <div className="flex flex-col gap-10 mt-20 items-center w-full">
             <div className="flex gap-1 items-center">
                 <BookmarkIcon className="h-[25px] w-[25px] md:h-[30px] md:w-[30px]" />
                 <h1 className="text-2xl font-semibold md:text-3xl">Saved</h1>

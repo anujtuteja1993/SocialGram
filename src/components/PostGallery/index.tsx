@@ -1,10 +1,13 @@
 import { Models } from "appwrite";
 import { HeartIcon, Square2StackIcon } from "@heroicons/react/24/solid";
 import { useGetPostsbyIds } from "../../lib/react-query/queriesAndMutations";
+import { Blurhash } from "react-blurhash";
+import { useState } from "react";
 
 const PostGallery = ({ postIds }: { postIds: string[] }) => {
     const fetchedPosts = useGetPostsbyIds(postIds);
-
+    const [isImgLoaded, setIsImgLoaded] = useState<boolean>(false);
+    console.log(fetchedPosts);
     return (
         <>
             {fetchedPosts.pending ? (
@@ -14,17 +17,31 @@ const PostGallery = ({ postIds }: { postIds: string[] }) => {
                     {fetchedPosts?.data.map(
                         (fetched: Models.Document | undefined, i: number) => (
                             <div key={i} className="relative">
+                                {/* {!isImgLoaded && ( */}
+                                <div
+                                    className={`aspect-square w-full ${
+                                        isImgLoaded ? "hidden" : ""
+                                    }`}
+                                >
+                                    <Blurhash
+                                        hash={fetched?.blurHashes[0]}
+                                        width="100%"
+                                        height="100%"
+                                        resolutionX={32}
+                                        resolutionY={32}
+                                        punch={1}
+                                        className="aspect-square object-cover object-center"
+                                    />
+                                </div>
+                                {/* )} */}
                                 <img
-                                    data-loaded="false"
-                                    className="aspect-square object-cover object-center data-[loaded=false]:animate-pulse data-[loaded=false]:bg-gray-100/10  data-[loaded=false]:opacity-0"
+                                    className={`aspect-square object-cover object-center ${
+                                        !isImgLoaded ? "hidden" : ""
+                                    }`}
                                     src={fetched?.imgUrls[0]}
-                                    onLoad={(event) => {
-                                        event.currentTarget.setAttribute(
-                                            "data-loaded",
-                                            "true"
-                                        );
-                                    }}
+                                    onLoad={() => setIsImgLoaded(true)}
                                 />
+
                                 {fetched?.imgUrls.length > 1 && (
                                     <Square2StackIcon className="absolute top-0 right-0 h-[25px] w-[25px] fill-white m-1 md:m-3 opacity-90" />
                                 )}
