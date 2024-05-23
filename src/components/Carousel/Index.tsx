@@ -10,24 +10,24 @@ const Carousel = ({ imgUrls }: CarouselProps) => {
 
     return (
         <div className="w-full carousel border-[1px] aspect-[4/5] rounded-box border-primary-content">
-            {!isImgLoaded && (
-                <div className="carousel-item skeleton w-full object-contain" />
-            )}
             {imgUrls.map((imgUrl, i) => (
-                <div
-                    id={"img" + (i + 1)}
-                    key={i}
-                    className="carousel-item w-full"
-                >
+                <>
+                    {!isImgLoaded && (
+                        <div className="carousel-item skeleton w-full" />
+                    )}
                     <img
+                        id={"img" + (i + 1)}
+                        key={i}
                         src={imgUrl}
-                        className={`w-full object-contain ${
-                            isImgLoaded ? "" : "hidden"
+                        className={`w-full carousel-item object-contain ${
+                            !isImgLoaded ? "opacity-0" : ""
                         }`}
                         alt="Image"
-                        onLoad={() => setIsImgLoaded(true)}
+                        onLoad={() => {
+                            setIsImgLoaded(true);
+                        }}
                     />
-                </div>
+                </>
             ))}
         </div>
     );

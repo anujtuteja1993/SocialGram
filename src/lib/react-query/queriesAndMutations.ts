@@ -54,6 +54,8 @@ export const useGetRecentPosts = () => {
     return useQuery({
         queryKey: ["getRecentPosts"],
         queryFn: getRecentPosts,
+        refetchOnWindowFocus: false,
+        staleTime: 2 * 60 * 1000,
     });
 };
 
@@ -78,9 +80,9 @@ export const useLikePost = () => {
             queryClient.invalidateQueries({
                 queryKey: ["getCurrentUser"],
             });
-            queryClient.invalidateQueries({
-                queryKey: ["getRecentPosts"],
-            });
+            // queryClient.invalidateQueries({
+            //     queryKey: ["getRecentPosts"],
+            // });
         },
     });
 };

@@ -15,8 +15,15 @@ const PostGallery = ({ postIds }: { postIds: string[] }) => {
                         (fetched: Models.Document | undefined, i: number) => (
                             <div key={i} className="relative">
                                 <img
-                                    className="aspect-square object-cover object-center"
+                                    data-loaded="false"
+                                    className="aspect-square object-cover object-center data-[loaded=false]:animate-pulse data-[loaded=false]:bg-gray-100/10  data-[loaded=false]:opacity-0"
                                     src={fetched?.imgUrls[0]}
+                                    onLoad={(event) => {
+                                        event.currentTarget.setAttribute(
+                                            "data-loaded",
+                                            "true"
+                                        );
+                                    }}
                                 />
                                 {fetched?.imgUrls.length > 1 && (
                                     <Square2StackIcon className="absolute top-0 right-0 h-[25px] w-[25px] fill-white m-1 md:m-3 opacity-90" />

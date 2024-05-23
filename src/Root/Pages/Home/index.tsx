@@ -4,7 +4,7 @@ import { useGetRecentPosts } from "../../../lib/react-query/queriesAndMutations"
 import HomeSkeleton from "./HomeSkeleton";
 
 const Home = () => {
-    const { data: posts, isPending: isPostLoading } = useGetRecentPosts();
+    const { data: posts, isFetching: isPostLoading } = useGetRecentPosts();
 
     return (
         <div className="flex flex-col mt-20 gap-5 items-center">
