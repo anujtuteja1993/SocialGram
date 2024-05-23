@@ -1,6 +1,7 @@
 import { NewPost, NewUser } from "../../types/types";
 import { ID, Query } from "appwrite";
 import { account, appwriteConfig, avatars, databases, storage } from "./config";
+import { encodeImageToBlurhash } from "../utils/blurhash";
 
 export const createNewUser = async (user: NewUser) => {
     try {
@@ -103,6 +104,7 @@ export const addPostToDB = async (post: {
     hashtags: string[];
     imgUrls: URL[];
     imgIds: string[];
+    blurHashes: string[];
     location: string;
 }) => {
     try {
@@ -122,6 +124,7 @@ export const createNewPost = async (post: NewPost) => {
     try {
         const imgViews: URL[] = [];
         const imgIds: string[] = [];
+        const blurHashes: string[] = [];
 
         for (let i = 0; i < post.file.length; i++) {
             const upload = await storage.createFile(
@@ -134,13 +137,9 @@ export const createNewPost = async (post: NewPost) => {
                 throw Error;
             }
 
-            const imgView = storage.getFilePreview(
+            const imgView = storage.getFileView(
                 appwriteConfig.storageId,
-                upload.$id,
-                0,
-                0,
-                undefined,
-                40
+                upload.$id
             );
 
             if (!imgView) {
@@ -156,6 +155,7 @@ export const createNewPost = async (post: NewPost) => {
                 throw Error;
             }
 
+            blurHashes.push(await encodeImageToBlurhash(imgView.toString()));
             imgViews.push(imgView);
             imgIds.push(upload.$id);
         }
@@ -166,6 +166,7 @@ export const createNewPost = async (post: NewPost) => {
             hashtags: post.hashtags,
             imgUrls: imgViews,
             imgIds: imgIds,
+            blurHashes: blurHashes,
             location: post.location,
         });
 

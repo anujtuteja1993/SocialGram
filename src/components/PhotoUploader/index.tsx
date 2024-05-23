@@ -4,22 +4,45 @@ import { PhotoIcon } from "@heroicons/react/24/outline";
 import { SetStateAction, useCallback, useState } from "react";
 import { FileWithPath, useDropzone } from "react-dropzone";
 import Carousel from "../Carousel/Index";
+import Resizer from "react-image-file-resizer";
 
 type PhotoUploaderProps = {
     files: File[];
     setFiles: React.Dispatch<React.SetStateAction<FileWithPath[]>>;
 };
 
+const resizeFile = (file: File) =>
+    new Promise<any>((resolve) => {
+        Resizer.imageFileResizer(
+            file,
+            2000,
+            2000,
+            "JPEG",
+            70,
+            0,
+            (uri) => {
+                resolve(uri);
+            },
+            "file"
+        );
+    });
+
 const PhotoUploader = ({ files, setFiles }: PhotoUploaderProps) => {
     const [fileUrl, setFileUrl] = useState<string[]>([]);
 
     const onDrop = useCallback(
-        (acceptedFiles: FileWithPath[]) => {
-            setFiles(acceptedFiles);
+        async (acceptedFiles: FileWithPath[]) => {
+            const filesTobeUploaded: FileWithPath[] = [];
             const newArray: SetStateAction<string[]> = [];
-            acceptedFiles.forEach((item) => {
-                newArray.push(URL.createObjectURL(item));
-            });
+            for (let i = 0; i < acceptedFiles.length; i++) {
+                const image: File = await resizeFile(acceptedFiles[i]);
+                filesTobeUploaded.push(image);
+                newArray.push(URL.createObjectURL(image));
+            }
+            // acceptedFiles.forEach((item) => {
+            //     newArray.push(URL.createObjectURL(item));
+            // });
+            setFiles(filesTobeUploaded);
             setFileUrl(newArray);
         },
         [files]

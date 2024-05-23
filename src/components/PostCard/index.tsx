@@ -13,6 +13,8 @@ type PostCardProps = {
 const PostCard = ({ post }: PostCardProps) => {
     const { user } = useUserContext();
 
+    console.log(post.blurHashes);
+
     const postAge = (postDate: string) => {
         dayjs.extend(relativeTime);
         return dayjs(postDate).fromNow();
@@ -62,7 +64,10 @@ const PostCard = ({ post }: PostCardProps) => {
                         <p key={i}>{"#" + hashtag} &nbsp;</p>
                     ))}
                 </div>
-                <Carousel imgUrls={post.imgUrls} />
+                <Carousel
+                    imgUrls={post.imgUrls}
+                    blurHashes={post?.blurHashes}
+                />
                 <LikeSavePost post={post} userId={user.id} />
             </div>
         </div>
