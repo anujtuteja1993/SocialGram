@@ -10,6 +10,7 @@ import {
     useSignInAccount,
 } from "../../../lib/react-query/queriesAndMutations";
 import { useUserContext } from "../../../contexts/userContext";
+import { useState } from "react";
 
 const SignUp = () => {
     const {
@@ -26,8 +27,15 @@ const SignUp = () => {
         },
     });
 
-    const { mutateAsync: createNewUser } = useCreateUserAccount();
-    const { mutateAsync: signInAccount } = useSignInAccount();
+    const { mutateAsync: createNewUser, isPending: isCreatingUser } =
+        useCreateUserAccount();
+    const {
+        mutateAsync: signInAccount,
+        isPending: isSigningIn,
+        isSuccess: successSignIn,
+    } = useSignInAccount();
+
+    const [isError, setIsError] = useState<Boolean>();
 
     const { checkCurrentUser } = useUserContext();
     const navigate = useNavigate();
@@ -38,6 +46,7 @@ const SignUp = () => {
             newAccount ==
             "AppwriteException: A user with the same id, email, or phone already exists in this project."
         ) {
+            setIsError(true);
             toast.error(
                 "A user with the same username or email already exists",
                 {
@@ -48,21 +57,28 @@ const SignUp = () => {
             );
             return;
         }
+
+        setIsError(false);
+
         const session = await signInAccount({
             email: values.email,
             password: values.password,
         });
+
         if (!session) {
+            setIsError(true);
             toast.error("Unable to create session", {
                 position: "top-center",
                 draggable: true,
                 theme: "dark",
             });
+            return;
         }
         const isUserLoggedIn = await checkCurrentUser();
         if (isUserLoggedIn) {
             navigate("/");
         } else {
+            setIsError(false);
             toast.error("Sign up Failed, please try again in a few minutes.", {
                 position: "top-center",
                 draggable: true,
@@ -321,7 +337,18 @@ const SignUp = () => {
                     </div>
                 </div>
                 <button type="submit" className="btn w-full py-4 relative">
-                    Sign Up
+                    <>
+                        {isSigningIn || isCreatingUser ? (
+                            <span className="loading loading-dots loading-md"></span>
+                        ) : successSignIn && !isError ? (
+                            <span
+                                className={`loading loading-dots loading-md text-success
+                                }`}
+                            ></span>
+                        ) : (
+                            (!isSigningIn || isError) && <span>Sign Up</span>
+                        )}
+                    </>
                 </button>
                 <p className="text-center mt-4">
                     Already registered?

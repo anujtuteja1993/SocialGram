@@ -18,7 +18,7 @@ const resizeFile = (file: File) =>
             2000,
             2000,
             "JPEG",
-            70,
+            40,
             0,
             (uri) => {
                 resolve(uri);

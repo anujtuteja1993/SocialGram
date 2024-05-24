@@ -7,6 +7,7 @@ import { z } from "zod";
 import { toast } from "react-toastify";
 import { useUserContext } from "../../../contexts/userContext";
 import { useSignInAccount } from "../../../lib/react-query/queriesAndMutations";
+import { useState } from "react";
 
 const SignIn = () => {
     const {
@@ -21,9 +22,19 @@ const SignIn = () => {
         },
     });
 
-    const { mutateAsync: signInAccount } = useSignInAccount();
+    const {
+        mutateAsync: signInAccount,
+        isPending: isSigningIn,
+        isSuccess: successSignIn,
+    } = useSignInAccount();
+
     const { checkCurrentUser } = useUserContext();
     const navigate = useNavigate();
+
+    const [isErrorSignIn, setIsErrorSignIn] = useState<Boolean>();
+
+    console.log(isErrorSignIn);
+    console.log(isSigningIn);
 
     const onSubmit = async (values: z.infer<typeof SignInValidation>) => {
         const session = await signInAccount({
@@ -32,11 +43,12 @@ const SignIn = () => {
         });
 
         const isUserLoggedIn = await checkCurrentUser();
-        console.log(isUserLoggedIn);
 
         if (isUserLoggedIn) {
+            setIsErrorSignIn(false);
             navigate("/");
         } else {
+            setIsErrorSignIn(true);
             toast.error(
                 `${session}` ===
                     "AppwriteException: Invalid credentials. Please check the email and password."
@@ -184,8 +196,27 @@ const SignIn = () => {
                         </p>
                     </div>
                 </div> */}
-                <button type="submit" className="btn w-full py-4 relative">
-                    Login
+                <button
+                    type="submit"
+                    className="btn w-full py-4 relative align-middle"
+                >
+                    {/* {successSignIn ? (
+                        <span className="loading loading-dots loading-md text-success"></span>
+                    ) : ( */}
+                    <>
+                        {isSigningIn ? (
+                            <span className="loading loading-dots loading-md"></span>
+                        ) : successSignIn && !isErrorSignIn ? (
+                            <span
+                                className={`loading loading-dots loading-md text-success
+                                }`}
+                            ></span>
+                        ) : (
+                            (!isSigningIn || isErrorSignIn) && (
+                                <span>Login</span>
+                            )
+                        )}
+                    </>
                 </button>
                 <p className="text-center mt-4">
                     Don't have an account?

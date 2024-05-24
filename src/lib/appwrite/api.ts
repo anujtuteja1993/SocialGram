@@ -11,10 +11,6 @@ export const createNewUser = async (user: NewUser) => {
             user.password,
             user.name
         );
-        console.log(newAccount);
-        if (!newAccount) {
-            throw Error;
-        }
 
         const avatarUrl = avatars.getInitials(user.name);
 
@@ -25,7 +21,7 @@ export const createNewUser = async (user: NewUser) => {
             username: user.username,
             imgUrl: avatarUrl,
         });
-        //console.log(newAccountDB);
+
         return newAccountDB;
     } catch (error) {
         return error;
