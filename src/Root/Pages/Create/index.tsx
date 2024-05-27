@@ -1,4 +1,4 @@
-import { SquaresPlusIcon as CreatePostOutline } from "@heroicons/react/24/outline";
+import { HiOutlineSquaresPlus as CreatePostOutline } from "react-icons/hi2";
 import { useForm } from "react-hook-form";
 import PhotoUploader from "../../../components/PhotoUploader";
 import { z } from "zod";
@@ -23,6 +23,7 @@ const Create = () => {
     } = useForm<z.infer<typeof PostValidation>>({
         resolver: zodResolver(PostValidation),
         defaultValues: {
+            aspectRatio: "4/5",
             file: [],
             caption: "",
             hashtags: "",
@@ -96,7 +97,10 @@ const Create = () => {
                 onSubmit={handleSubmit(onSubmit)}
                 className="container w-screen mb-5 md:border-[1px] rounded-xl border-primary-content md:max-w-xl"
             >
-                <div className="flex flex-col m-10 gap-1 md:gap-2">
+                <div className="flex flex-col m-10 gap-5 md:gap-2">
+                    <div className="flex gap-1 items-center">
+                        <p>Select the aspect ratio:</p>
+                    </div>
                     <PhotoUploader files={files} setFiles={setFiles} />
                     <div className="h-[20px]">
                         {files.length < 1 && (

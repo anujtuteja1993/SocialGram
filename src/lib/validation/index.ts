@@ -31,7 +31,10 @@ export const SignInValidation = z.object({
 //     "image/webp",
 // ];
 
+const AspectRatioTypeSchema = z.enum(["4/5", "1/1", "16/9"]);
+
 export const PostValidation = z.object({
+    aspectRatio: AspectRatioTypeSchema,
     file: z.custom<File[]>(),
     // .refine((files) => files?.length == 1, "Atleast 1 image is required")
     // .refine(

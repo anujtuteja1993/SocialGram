@@ -1,6 +1,6 @@
 //Need to implement scrolling with buttons for Carousel and Separating the carousel component.
 
-import { PhotoIcon } from "@heroicons/react/24/outline";
+import { HiOutlinePhoto as PhotoIcon } from "react-icons/hi2";
 import { SetStateAction, useCallback, useState } from "react";
 import { FileWithPath, useDropzone } from "react-dropzone";
 import Carousel from "../Carousel/Index";
@@ -59,10 +59,10 @@ const PhotoUploader = ({ files, setFiles }: PhotoUploaderProps) => {
 
     return (
         <>
-            <div className="w-full inline-flex rounded-box aspect-[4/5] md:h-[650px]">
+            <div className="w-full flex rounded-box items-center justify-center">
                 {acceptedFiles.length == 0 ? (
                     <div
-                        className="flex flex-col gap-4 w-full items-center justify-center border-[1px] rounded-box border-primary-content"
+                        className="flex flex-col gap-4 w-full items-center justify-center border-[1px] aspect-[4/5] rounded-box border-primary-content"
                         {...getRootProps()}
                     >
                         <PhotoIcon className="h-[50px] w-[50px]" />

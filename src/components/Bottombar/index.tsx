@@ -1,17 +1,15 @@
 import {
-    HomeIcon as HomeSolid,
-    BookmarkIcon as SavedSolid,
-    RectangleStackIcon as ExploreSolid,
-    SquaresPlusIcon as CreatePostSolid,
-    UserGroupIcon as PeopleSolid,
-} from "@heroicons/react/20/solid";
-import {
-    HomeIcon as HomeOutline,
-    BookmarkIcon as SavedOutline,
-    RectangleStackIcon as ExploreOutline,
-    SquaresPlusIcon as CreatePostOutline,
-    UserGroupIcon as PeopleOutline,
-} from "@heroicons/react/24/outline";
+    HiHome as HomeSolid,
+    HiBookmark as SavedSolid,
+    HiRectangleStack as ExploreSolid,
+    HiSquaresPlus as CreatePostSolid,
+    HiUserGroup as PeopleSolid,
+    HiOutlineHome as HomeOutline,
+    HiOutlineBookmark as SavedOutline,
+    HiOutlineRectangleStack as ExploreOutline,
+    HiOutlineSquaresPlus as CreatePostOutline,
+    HiOutlineUserGroup as PeopleOutline,
+} from "react-icons/hi2";
 import { useUserContext } from "../../contexts/userContext";
 import { Link } from "react-router-dom";
 

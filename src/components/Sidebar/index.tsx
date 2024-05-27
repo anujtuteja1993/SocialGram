@@ -1,19 +1,17 @@
 import logo from "../../assets/logo.png";
 import {
-    HomeIcon as HomeSolid,
-    UserGroupIcon as PeopleSolid,
-    BookmarkIcon as SavedSolid,
-    SquaresPlusIcon as CreatePostSolid,
-    RectangleStackIcon as ExploreSolid,
-} from "@heroicons/react/24/solid";
-import {
-    BookmarkIcon as SavedOutline,
-    RectangleStackIcon as ExploreOutline,
-    SquaresPlusIcon as CreatePostOutline,
-    UserGroupIcon as PeopleOutline,
-    ArrowLeftStartOnRectangleIcon as LogoutButton,
-    HomeIcon as HomeOutline,
-} from "@heroicons/react/24/outline";
+    HiHome as HomeSolid,
+    HiBookmark as SavedSolid,
+    HiRectangleStack as ExploreSolid,
+    HiSquaresPlus as CreatePostSolid,
+    HiUserGroup as PeopleSolid,
+    HiOutlineHome as HomeOutline,
+    HiOutlineBookmark as SavedOutline,
+    HiOutlineRectangleStack as ExploreOutline,
+    HiOutlineSquaresPlus as CreatePostOutline,
+    HiOutlineUserGroup as PeopleOutline,
+    HiOutlineArrowLeftStartOnRectangle as LogoutButton,
+} from "react-icons/hi2";
 import { Link, useLocation } from "react-router-dom";
 import { useSignOutAccount } from "../../lib/react-query/queriesAndMutations";
 import { useEffect } from "react";
