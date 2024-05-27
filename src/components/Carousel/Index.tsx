@@ -12,9 +12,8 @@ const Carousel = ({ imgUrls, blurHashes, aspectRatio }: CarouselProps) => {
 
     return (
         <div
-            className={`w-full carousel border-[1px] transition-all duration-200 aspect-[${
-                aspectRatio ? aspectRatio : "4/5"
-            }] rounded-box border-primary-content`}
+            className="w-full carousel border-[1px] transition-all duration-200 rounded-box border-primary-content"
+            style={{ aspectRatio: `${aspectRatio ? aspectRatio : "4/5"}` }}
         >
             {!isImgLoaded && blurHashes && (
                 <div className="top-0 bottom-0 w-full overflow-clip">

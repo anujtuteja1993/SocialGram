@@ -70,11 +70,14 @@ const LikeSavePost = ({ post, userId }: LikeSavePostProps) => {
     return (
         <div className="flex justify-between m-2">
             <div className="flex flex-row items-center gap-1">
-                <button onClick={handleLikeClick}>
+                <button
+                    className="h-[30px] w-[30px] md:h-[35px] md:w-[35px]"
+                    onClick={handleLikeClick}
+                >
                     {likes.find((id: string) => id === userId) ? (
-                        <LikedSolid className="h-[30px] w-[30px] md:h-[35px] md:w-[35px] cursor-pointer transition duration-200 hover:scale-110 active:scale-90 fill-red-500" />
+                        <LikedSolid className="h-full w-full cursor-pointer transition duration-200 hover:scale-110 active:scale-90 fill-red-500" />
                     ) : (
-                        <LikedOutline className="h-[30px] w-[30px] md:h-[35px] md:w-[35px] cursor-pointer transition duration-200 hover:scale-110 active:scale-90" />
+                        <LikedOutline className="h-full w-full cursor-pointer transition duration-200 hover:scale-110 active:scale-90" />
                     )}
                 </button>
                 <p className="text-xl md:text-2xl">{likes.length}</p>
@@ -83,7 +86,10 @@ const LikeSavePost = ({ post, userId }: LikeSavePostProps) => {
                 {isSavingPost || isUnsavingPost ? (
                     <span className="loading loading-bars"></span>
                 ) : (
-                    <button onClick={handleSaveClick}>
+                    <button
+                        className="h-[30px] w-[30px] md:h-[35px] md:w-[35px]"
+                        onClick={handleSaveClick}
+                    >
                         {saved ? (
                             <SavedSolid className="h-full w-full cursor-pointer transition duration-200 hover:scale-110 active:scale-90" />
                         ) : (

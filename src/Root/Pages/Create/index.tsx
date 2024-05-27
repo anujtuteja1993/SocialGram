@@ -112,39 +112,42 @@ const Create = () => {
                             Select the aspect ratio:
                         </p>
                         <button
+                            className="h-7 w-7"
                             type="button"
                             onClick={() => {
                                 setAspectRatio("4/5");
                             }}
                         >
                             {aspectRatio === "4/5" ? (
-                                <AspectRatioDefaultSolid className="h-7 w-7 transition duration-200 hover:scale-110 active:scale-90" />
+                                <AspectRatioDefaultSolid className="h-full w-full transition duration-200 hover:scale-110 active:scale-90" />
                             ) : (
-                                <AspectRatioDefaultOutline className="h-7 w-7 transition duration-200 hover:scale-110 active:scale-90" />
+                                <AspectRatioDefaultOutline className="h-full w-full transition duration-200 hover:scale-110 active:scale-90" />
                             )}
                         </button>
                         <button
+                            className="h-7 w-7"
                             type="button"
                             onClick={() => {
                                 setAspectRatio("1/1");
                             }}
                         >
                             {aspectRatio === "1/1" ? (
-                                <AspectRatioSquareSolid className="h-7 w-7 transition duration-200 hover:scale-110 active:scale-90" />
+                                <AspectRatioSquareSolid className="h-full w-full transition duration-200 hover:scale-110 active:scale-90" />
                             ) : (
-                                <AspectRatioSquareOutline className="h-7 w-7 transition duration-200 hover:scale-110 active:scale-90" />
+                                <AspectRatioSquareOutline className="h-full w-full transition duration-200 hover:scale-110 active:scale-90" />
                             )}
                         </button>
                         <button
+                            className="h-7 w-7"
                             type="button"
                             onClick={() => {
                                 setAspectRatio("1.91/1");
                             }}
                         >
                             {aspectRatio === "1.91/1" ? (
-                                <AspectRatioVideoSolid className="h-7 w-7 transition duration-200 hover:scale-110 active:scale-90" />
+                                <AspectRatioVideoSolid className="h-full w-full transition duration-200 hover:scale-110 active:scale-90" />
                             ) : (
-                                <AspectRatioVideoOutline className="h-7 w-7 transition duration-200 hover:scale-110 active:scale-90" />
+                                <AspectRatioVideoOutline className="h-full w-full transition duration-200 hover:scale-110 active:scale-90" />
                             )}
                         </button>
                     </div>
