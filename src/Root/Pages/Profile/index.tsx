@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { useUserContext } from "../../../contexts/userContext";
 import { useGetUserById } from "../../../lib/react-query/queriesAndMutations";
 import PostGallery from "../../../components/PostGallery";
-import { Squares2X2Icon } from "@heroicons/react/24/solid";
+import { HiSquares2X2 } from "react-icons/hi2";
 import ProfileSkeleton from "./ProfileSkeleton";
 
 const Profile = () => {
@@ -42,7 +42,7 @@ const Profile = () => {
                     </div>
                     <div className="flex flex-col gap-10 w-full items-center">
                         <div className="flex gap-1 items-center">
-                            <Squares2X2Icon className="h-[25px] w-[25px] md:h-[30px] md:w-[30px]" />
+                            <HiSquares2X2 className="h-[25px] w-[25px] md:h-[30px] md:w-[30px]" />
                             <h1 className="text-2xl font-semibold md:text-3xl">
                                 Posts
                             </h1>

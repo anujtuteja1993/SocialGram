@@ -1,11 +1,9 @@
 import {
-    BookmarkIcon as SavedOutline,
-    HeartIcon as LikedOutline,
-} from "@heroicons/react/24/outline";
-import {
-    BookmarkIcon as SavedSolid,
-    HeartIcon as LikedSolid,
-} from "@heroicons/react/24/solid";
+    HiBookmark as SavedSolid,
+    HiHeart as LikedSolid,
+    HiOutlineBookmark as SavedOutline,
+    HiOutlineHeart as LikedOutline,
+} from "react-icons/hi2";
 
 import { Models } from "appwrite";
 import { useEffect, useState } from "react";
@@ -35,24 +33,6 @@ const LikeSavePost = ({ post, userId }: LikeSavePostProps) => {
     const { mutateAsync: unSavePost, isPending: isUnsavingPost } =
         useUnsavePost();
 
-    //console.log(currentUser);
-
-    // const checkIsSaved = () => {
-    //     if (
-    //         post.save.find(
-    //             (e: { user: { $id: string } }) => e.user.$id === userId
-    //         )
-    //     ) {
-    //         console.log("Saved!");
-    //         setSaved(true);
-    //         return true;
-    //     } else {
-    //         console.log("Why this?");
-    //         setSaved(false);
-    //         return false;
-    //     }
-    // };
-
     const savedPost = currentUser?.save.find(
         (saved: Models.Document) => saved.post.$id === post.$id
     );
@@ -77,30 +57,6 @@ const LikeSavePost = ({ post, userId }: LikeSavePostProps) => {
     };
 
     const handleSaveClick = () => {
-        // if (post.save.find((user: { $id: string }) => user.$id === userId)) {
-        //         //delete saved
-        // }
-        // else {
-        // }
-        //savePost(userId, post.$id);
-        // console.log(post);
-        // if (
-        //     post.save.find(
-        //         (e: { user: { $id: string } }) => e.user.$id === userId
-        //     )
-        // ) {
-        //     let savedPost = post.save.find(
-        //         (e: { user: { $id: string } }) => e.user.$id === userId
-        //     );
-        //     console.log("Unsaving!");
-        //     console.log(savedPost);
-        //     setSaved(false);
-        //     unSavePost(savedPost.$id);
-        // } else {
-        //     console.log("Saving!");
-        //     setSaved(true);
-        //     savePost(userId, post.$id);
-        // }
         if (savedPost) {
             setSaved(false);
             console.log(savedPost);

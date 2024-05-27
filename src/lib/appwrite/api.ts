@@ -100,6 +100,7 @@ export const addPostToDB = async (post: {
     hashtags: string[];
     imgUrls: URL[];
     imgIds: string[];
+    aspectRatio: string;
     blurHashes: string[];
     location: string;
 }) => {
@@ -121,6 +122,8 @@ export const createNewPost = async (post: NewPost) => {
         const imgViews: URL[] = [];
         const imgIds: string[] = [];
         const blurHashes: string[] = [];
+
+        console.log(post);
 
         for (let i = 0; i < post.file.length; i++) {
             const upload = await storage.createFile(
@@ -162,6 +165,7 @@ export const createNewPost = async (post: NewPost) => {
             hashtags: post.hashtags,
             imgUrls: imgViews,
             imgIds: imgIds,
+            aspectRatio: post.aspectRatio,
             blurHashes: blurHashes,
             location: post.location,
         });

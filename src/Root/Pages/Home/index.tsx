@@ -1,4 +1,4 @@
-import { HomeIcon as HomeSolid } from "@heroicons/react/24/solid";
+import { HiHome as HomeSolid } from "react-icons/hi2";
 import PostCard from "../../../components/PostCard";
 import { useGetRecentPosts } from "../../../lib/react-query/queriesAndMutations";
 import HomeSkeleton from "./HomeSkeleton";

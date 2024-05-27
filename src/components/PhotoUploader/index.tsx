@@ -9,6 +9,7 @@ import Resizer from "react-image-file-resizer";
 type PhotoUploaderProps = {
     files: File[];
     setFiles: React.Dispatch<React.SetStateAction<FileWithPath[]>>;
+    aspectRatio: string;
 };
 
 const resizeFile = (file: File) =>
@@ -27,7 +28,11 @@ const resizeFile = (file: File) =>
         );
     });
 
-const PhotoUploader = ({ files, setFiles }: PhotoUploaderProps) => {
+const PhotoUploader = ({
+    files,
+    setFiles,
+    aspectRatio,
+}: PhotoUploaderProps) => {
     const [fileUrl, setFileUrl] = useState<string[]>([]);
 
     const onDrop = useCallback(
@@ -62,7 +67,8 @@ const PhotoUploader = ({ files, setFiles }: PhotoUploaderProps) => {
             <div className="w-full flex rounded-box items-center justify-center">
                 {acceptedFiles.length == 0 ? (
                     <div
-                        className="flex flex-col gap-4 w-full items-center justify-center border-[1px] aspect-[4/5] rounded-box border-primary-content"
+                        className="flex flex-col gap-4 w-full items-center justify-center border-[1px] transition-all duration-200 rounded-box border-primary-content"
+                        style={{ aspectRatio: `${aspectRatio}` }}
                         {...getRootProps()}
                     >
                         <PhotoIcon className="h-[50px] w-[50px]" />
@@ -75,7 +81,7 @@ const PhotoUploader = ({ files, setFiles }: PhotoUploaderProps) => {
                     </div>
                 ) : (
                     <>
-                        <Carousel imgUrls={fileUrl} />
+                        <Carousel imgUrls={fileUrl} aspectRatio={aspectRatio} />
                     </>
                 )}
             </div>

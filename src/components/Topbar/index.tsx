@@ -1,5 +1,5 @@
 import logo from "../../assets/logo.png";
-import { ArrowLeftStartOnRectangleIcon as LogoutButton } from "@heroicons/react/24/outline";
+import { HiOutlineArrowLeftStartOnRectangle as LogoutButton } from "react-icons/hi2";
 import { useSignOutAccount } from "../../lib/react-query/queriesAndMutations";
 import { useEffect } from "react";
 

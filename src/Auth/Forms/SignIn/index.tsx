@@ -33,9 +33,6 @@ const SignIn = () => {
 
     const [isErrorSignIn, setIsErrorSignIn] = useState<Boolean>();
 
-    console.log(isErrorSignIn);
-    console.log(isSigningIn);
-
     const onSubmit = async (values: z.infer<typeof SignInValidation>) => {
         const session = await signInAccount({
             email: values.email,

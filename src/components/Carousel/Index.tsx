@@ -4,26 +4,18 @@ import { Blurhash } from "react-blurhash";
 type CarouselProps = {
     imgUrls: string[];
     blurHashes?: string[];
+    aspectRatio?: string;
 };
 
-const Carousel = ({ imgUrls, blurHashes }: CarouselProps) => {
+const Carousel = ({ imgUrls, blurHashes, aspectRatio }: CarouselProps) => {
     const [isImgLoaded, setIsImgLoaded] = useState(false);
-    // console.log(blurHashes);
-    // const [isLoaded, setLoaded] = useState(false);
-    // const [isLoadStarted, setLoadStarted] = useState(false);
-
-    // const handleLoad = () => {
-    //     console.log("loaded");
-    //     setLoaded(true);
-    // };
-
-    // const handleLoadStarted = () => {
-    //     console.log("Started: ");
-    //     setLoadStarted(true);
-    // };
 
     return (
-        <div className="w-full carousel border-[1px] aspect-[4/5] rounded-box border-primary-content">
+        <div
+            className={`w-full carousel border-[1px] transition-all duration-200 aspect-[${
+                aspectRatio ? aspectRatio : "4/5"
+            }] rounded-box border-primary-content`}
+        >
             {!isImgLoaded && blurHashes && (
                 <div className="top-0 bottom-0 w-full overflow-clip">
                     <Blurhash
@@ -37,35 +29,18 @@ const Carousel = ({ imgUrls, blurHashes }: CarouselProps) => {
                 </div>
             )}
             {imgUrls.map((imgUrl, i) => (
-                <>
-                    <img
-                        id={"img" + (i + 1)}
-                        key={i}
-                        src={imgUrl}
-                        className={`w-full carousel-item object-fill ${
-                            !isImgLoaded ? "hidden" : ""
-                        }`}
-                        alt="Image"
-                        onLoad={() => {
-                            setIsImgLoaded(true);
-                        }}
-                    />
-                    {/* {!isImgLoaded && (
-                        <div className="carousel-item skeleton w-full" />
-                    )}
-                    <img
-                        id={"img" + (i + 1)}
-                        key={i}
-                        src={imgUrl}
-                        className={`w-full carousel-item object-contain ${
-                            !isImgLoaded ? "opacity-0" : ""
-                        }`}
-                        alt="Image"
-                        onLoad={() => {
-                            setIsImgLoaded(true);
-                        }}
-                    /> */}
-                </>
+                <img
+                    id={"img" + (i + 1)}
+                    key={i}
+                    src={imgUrl}
+                    className={`w-full carousel-item object-fill ${
+                        !isImgLoaded ? "hidden" : ""
+                    }`}
+                    alt="Image"
+                    onLoad={() => {
+                        setIsImgLoaded(true);
+                    }}
+                />
             ))}
         </div>
     );

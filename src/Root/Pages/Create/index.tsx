@@ -1,4 +1,12 @@
 import { HiOutlineSquaresPlus as CreatePostOutline } from "react-icons/hi2";
+import {
+    TbRectangleVertical as AspectRatioDefaultOutline,
+    TbRectangleVerticalFilled as AspectRatioDefaultSolid,
+    TbRectangle as AspectRatioVideoOutline,
+    TbRectangleFilled as AspectRatioVideoSolid,
+    TbSquare as AspectRatioSquareOutline,
+    TbSquareFilled as AspectRatioSquareSolid,
+} from "react-icons/tb";
 import { useForm } from "react-hook-form";
 import PhotoUploader from "../../../components/PhotoUploader";
 import { z } from "zod";
@@ -15,7 +23,7 @@ import { useNavigate } from "react-router-dom";
 
 const Create = () => {
     const [files, setFiles] = useState<File[]>([]);
-
+    const [aspectRatio, setAspectRatio] = useState<string>("4/5");
     const {
         handleSubmit,
         register,
@@ -53,6 +61,7 @@ const Create = () => {
 
         const newPost = await createNewPost({
             ...values,
+            aspectRatio: aspectRatio,
             hashtags: splitHashtagsToArray(values.hashtags),
             userId: user.id,
             file: files,
@@ -97,11 +106,53 @@ const Create = () => {
                 onSubmit={handleSubmit(onSubmit)}
                 className="container w-screen mb-5 md:border-[1px] rounded-xl border-primary-content md:max-w-xl"
             >
-                <div className="flex flex-col m-10 gap-5 md:gap-2">
-                    <div className="flex gap-1 items-center">
-                        <p>Select the aspect ratio:</p>
+                <div className="flex flex-col m-10 gap-1 md:gap-2">
+                    <div className="flex gap-3 md:gap-5 items-center">
+                        <p className="text-md md:text-xl">
+                            Select the aspect ratio:
+                        </p>
+                        <button
+                            type="button"
+                            onClick={() => {
+                                setAspectRatio("4/5");
+                            }}
+                        >
+                            {aspectRatio === "4/5" ? (
+                                <AspectRatioDefaultSolid className="h-7 w-7 transition duration-200 hover:scale-110 active:scale-90" />
+                            ) : (
+                                <AspectRatioDefaultOutline className="h-7 w-7 transition duration-200 hover:scale-110 active:scale-90" />
+                            )}
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => {
+                                setAspectRatio("1/1");
+                            }}
+                        >
+                            {aspectRatio === "1/1" ? (
+                                <AspectRatioSquareSolid className="h-7 w-7 transition duration-200 hover:scale-110 active:scale-90" />
+                            ) : (
+                                <AspectRatioSquareOutline className="h-7 w-7 transition duration-200 hover:scale-110 active:scale-90" />
+                            )}
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => {
+                                setAspectRatio("1.91/1");
+                            }}
+                        >
+                            {aspectRatio === "1.91/1" ? (
+                                <AspectRatioVideoSolid className="h-7 w-7 transition duration-200 hover:scale-110 active:scale-90" />
+                            ) : (
+                                <AspectRatioVideoOutline className="h-7 w-7 transition duration-200 hover:scale-110 active:scale-90" />
+                            )}
+                        </button>
                     </div>
-                    <PhotoUploader files={files} setFiles={setFiles} />
+                    <PhotoUploader
+                        files={files}
+                        setFiles={setFiles}
+                        aspectRatio={aspectRatio}
+                    />
                     <div className="h-[20px]">
                         {files.length < 1 && (
                             <div className="flex flex-row ml-2 items-center">
