@@ -32,7 +32,7 @@ const Carousel = ({ imgUrls, blurHashes, aspectRatio }: CarouselProps) => {
                     id={"img" + (i + 1)}
                     key={i}
                     src={imgUrl}
-                    className={`w-full carousel-item object-fill ${
+                    className={`w-full carousel-item object-cover ${
                         !isImgLoaded ? "hidden" : ""
                     }`}
                     alt="Image"
