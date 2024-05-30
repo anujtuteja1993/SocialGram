@@ -13,8 +13,11 @@ const PostDetailsModal = ({ post }: PostDetailsModalProps) => {
     const { user } = useUserContext();
 
     return (
-        <dialog id="postModal" className="modal modal-middle">
-            <div className="flex modal-box w-full overflow-hidden justify-center">
+        <dialog
+            id="postModal"
+            className="modal modal-middle bg-base-100 md:bg-base-100/90"
+        >
+            <div className="flex modal-box bg-base-100 h-full w-full overflow-hidden justify-center">
                 <form method="dialog">
                     {user.id === post?.creator.$id && (
                         <Link

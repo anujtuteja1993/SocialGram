@@ -41,7 +41,7 @@ const PostCard = ({ post }: PostCardProps) => {
                             <span className="mx-1 font-light text-secondary-content text-sm">
                                 &#8226;
                             </span>
-                            <p className="mx-1 font-light text-secondary-content text-sm">
+                            <p className="mx-1 text-nowrap font-light text-secondary-content text-sm">
                                 {postAge(post.$createdAt)}
                             </p>
                         </div>

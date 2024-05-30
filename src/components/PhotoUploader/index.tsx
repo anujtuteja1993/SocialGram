@@ -11,6 +11,7 @@ type PhotoUploaderProps = {
     imgUrls?: string[];
     blurHashes?: string[];
     onFieldChange: (files: File[]) => void;
+    errored: Boolean;
 };
 
 const resizeFile = (file: File) =>
@@ -34,6 +35,7 @@ const PhotoUploader = ({
     imgUrls,
     blurHashes,
     onFieldChange,
+    errored,
 }: PhotoUploaderProps) => {
     const [fileUrl, setFileUrl] = useState<string[] | undefined>(imgUrls);
     const [files, setFiles] = useState<File[]>([]);
@@ -60,36 +62,34 @@ const PhotoUploader = ({
 
     return (
         <div
-            className="w-full flex rounded-box items-center justify-center"
+            className={`w-full flex rounded-box items-center justify-center ${
+                errored ? "input-error" : ""
+            }`}
             {...getRootProps()}
         >
             <input {...getInputProps()} />
-            {
-                fileUrl ? (
-                    <Carousel
-                        imgUrls={fileUrl}
-                        aspectRatio={aspectRatio}
-                        blurHashes={blurHashes}
-                    />
-                ) : (
-                    acceptedFiles.length == 0 && (
-                        <div
-                            className="flex flex-col gap-4 w-full items-center justify-center border-[1px] transition-all duration-200 rounded-box border-primary-content"
-                            style={{ aspectRatio: `${aspectRatio}` }}
-                        >
-                            <PhotoIcon className="h-[50px] w-[50px]" />
-                            <p>Drag Photos here or click to Browse</p>
-                        </div>
-                    )
+            {fileUrl ? (
+                <Carousel
+                    imgUrls={fileUrl}
+                    aspectRatio={aspectRatio}
+                    blurHashes={blurHashes}
+                />
+            ) : (
+                acceptedFiles.length == 0 && (
+                    <div
+                        className={`flex flex-col gap-4 w-full items-center justify-center border-[1px] transition-all duration-200 rounded-box border-primary-content${
+                            errored ? "border-2 border-[#FE6F6F]" : ""
+                        }`}
+                        style={{ aspectRatio: `${aspectRatio}` }}
+                    >
+                        <PhotoIcon className="h-[50px] w-[50px]" />
+                        <p className="hidden md:block">
+                            Drag Photos here or click to Browse
+                        </p>
+                        <p className="md:hidden">Tap to Add Photos</p>
+                    </div>
                 )
-                // : (
-                //     <Carousel
-                //         imgUrls={imgUrls && files.length < 1 ? imgUrls : fileUrl}
-                //         aspectRatio={aspectRatio}
-                //         blurHashes={blurHashes}
-                //     />
-                // )
-            }
+            )}
         </div>
     );
 };

@@ -32,7 +32,6 @@ const PostForm = ({ post, mode }: PostFormProps) => {
         post ? post.aspectRatio : "4/5"
     );
 
-    console.log(mode);
     const form = useForm<z.infer<typeof PostValidation>>({
         resolver: zodResolver(PostValidation),
         defaultValues: {
@@ -120,50 +119,6 @@ const PostForm = ({ post, mode }: PostFormProps) => {
             className="container w-screen mb-5 md:border-[1px] rounded-xl border-primary-content md:max-w-xl"
         >
             <div className="flex flex-col m-10 gap-1 md:gap-2">
-                {/* <div className="flex gap-3 md:gap-5 items-center">
-                    <p className="text-md md:text-xl">
-                        Select the aspect ratio:
-                    </p>
-                    <button
-                        className="h-7 w-7"
-                        type="button"
-                        onClick={() => {
-                            setAspectRatio("4/5");
-                        }}
-                    >
-                        {aspectRatio === "4/5" ? (
-                            <AspectRatioDefaultSolid className="h-full w-full transition duration-200 hover:scale-110 active:scale-90" />
-                        ) : (
-                            <AspectRatioDefaultOutline className="h-full w-full transition duration-200 hover:scale-110 active:scale-90" />
-                        )}
-                    </button>
-                    <button
-                        className="h-7 w-7"
-                        type="button"
-                        onClick={() => {
-                            setAspectRatio("1/1");
-                        }}
-                    >
-                        {aspectRatio === "1/1" ? (
-                            <AspectRatioSquareSolid className="h-full w-full transition duration-200 hover:scale-110 active:scale-90" />
-                        ) : (
-                            <AspectRatioSquareOutline className="h-full w-full transition duration-200 hover:scale-110 active:scale-90" />
-                        )}
-                    </button>
-                    <button
-                        className="h-7 w-7"
-                        type="button"
-                        onClick={() => {
-                            setAspectRatio("1.91/1");
-                        }}
-                    >
-                        {aspectRatio === "1.91/1" ? (
-                            <AspectRatioVideoSolid className="h-full w-full transition duration-200 hover:scale-110 active:scale-90" />
-                        ) : (
-                            <AspectRatioVideoOutline className="h-full w-full transition duration-200 hover:scale-110 active:scale-90" />
-                        )}
-                    </button>
-                </div> */}
                 <Controller
                     control={form.control}
                     name="aspectRatio"
@@ -180,12 +135,11 @@ const PostForm = ({ post, mode }: PostFormProps) => {
                     name="files"
                     render={({ field: { onChange } }) => (
                         <PhotoUploader
-                            // files={files}
-                            // setFiles={setFiles}
                             onFieldChange={onChange}
                             aspectRatio={aspectRatio}
                             imgUrls={post?.imgUrls}
                             blurHashes={post?.blurHashes}
+                            errored={form.formState.errors.files ? true : false}
                         />
                     )}
                 />
@@ -207,7 +161,7 @@ const PostForm = ({ post, mode }: PostFormProps) => {
                                 />
                             </svg>
                             <p className="text-xs md:text-md text-red-500 ml-1">
-                                Atleast 1 image is required
+                                {form.formState.errors.files.message}
                             </p>
                         </div>
                     )}
