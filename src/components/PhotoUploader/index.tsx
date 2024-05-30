@@ -7,9 +7,10 @@ import Carousel from "../Carousel/Index";
 import Resizer from "react-image-file-resizer";
 
 type PhotoUploaderProps = {
-    files: File[];
-    setFiles: React.Dispatch<React.SetStateAction<FileWithPath[]>>;
     aspectRatio: string;
+    imgUrls?: string[];
+    blurHashes?: string[];
+    onFieldChange: (files: File[]) => void;
 };
 
 const resizeFile = (file: File) =>
@@ -29,11 +30,13 @@ const resizeFile = (file: File) =>
     });
 
 const PhotoUploader = ({
-    files,
-    setFiles,
     aspectRatio,
+    imgUrls,
+    blurHashes,
+    onFieldChange,
 }: PhotoUploaderProps) => {
-    const [fileUrl, setFileUrl] = useState<string[]>([]);
+    const [fileUrl, setFileUrl] = useState<string[] | undefined>(imgUrls);
+    const [files, setFiles] = useState<File[]>([]);
 
     const onDrop = useCallback(
         async (acceptedFiles: FileWithPath[]) => {
@@ -44,48 +47,50 @@ const PhotoUploader = ({
                 filesTobeUploaded.push(image);
                 newArray.push(URL.createObjectURL(image));
             }
-            // acceptedFiles.forEach((item) => {
-            //     newArray.push(URL.createObjectURL(item));
-            // });
-            setFiles(filesTobeUploaded);
+            onFieldChange(filesTobeUploaded);
             setFileUrl(newArray);
+            setFiles(filesTobeUploaded);
         },
         [files]
     );
 
-    const {
-        acceptedFiles,
-        getRootProps,
-        getInputProps,
-        // isDragActive
-    } = useDropzone({
+    const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
         onDrop,
     });
 
     return (
-        <>
-            <div className="w-full flex rounded-box items-center justify-center">
-                {acceptedFiles.length == 0 ? (
-                    <div
-                        className="flex flex-col gap-4 w-full items-center justify-center border-[1px] transition-all duration-200 rounded-box border-primary-content"
-                        style={{ aspectRatio: `${aspectRatio}` }}
-                        {...getRootProps()}
-                    >
-                        <PhotoIcon className="h-[50px] w-[50px]" />
-                        <input {...getInputProps()} />
-                        {/* {isDragActive ? (
-                            <p>Drop the files here ...</p>
-                        ) : ( */}
-                        <p>Drag Photos here or click to Browse</p>
-                        {/* )} */}
-                    </div>
+        <div
+            className="w-full flex rounded-box items-center justify-center"
+            {...getRootProps()}
+        >
+            <input {...getInputProps()} />
+            {
+                fileUrl ? (
+                    <Carousel
+                        imgUrls={fileUrl}
+                        aspectRatio={aspectRatio}
+                        blurHashes={blurHashes}
+                    />
                 ) : (
-                    <>
-                        <Carousel imgUrls={fileUrl} aspectRatio={aspectRatio} />
-                    </>
-                )}
-            </div>
-        </>
+                    acceptedFiles.length == 0 && (
+                        <div
+                            className="flex flex-col gap-4 w-full items-center justify-center border-[1px] transition-all duration-200 rounded-box border-primary-content"
+                            style={{ aspectRatio: `${aspectRatio}` }}
+                        >
+                            <PhotoIcon className="h-[50px] w-[50px]" />
+                            <p>Drag Photos here or click to Browse</p>
+                        </div>
+                    )
+                )
+                // : (
+                //     <Carousel
+                //         imgUrls={imgUrls && files.length < 1 ? imgUrls : fileUrl}
+                //         aspectRatio={aspectRatio}
+                //         blurHashes={blurHashes}
+                //     />
+                // )
+            }
+        </div>
     );
 };
 

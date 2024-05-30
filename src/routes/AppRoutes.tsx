@@ -9,7 +9,7 @@ import Explore from "../Root/Pages/Explore";
 import Saved from "../Root/Pages/Saved";
 import Create from "../Root/Pages/Create";
 import Profile from "../Root/Pages/Profile";
-import PostDetails from "../Root/Pages/PostDetails";
+import EditPost from "../Root/Pages/EditPost";
 
 export const AppRoutes = () => {
     return (
@@ -26,7 +26,7 @@ export const AppRoutes = () => {
                     <Route path="/saved" element={<Saved />} />
                     <Route path="/create" element={<Create />} />
                     <Route path="/profile/:id" element={<Profile />} />
-                    <Route path="/posts/:id" element={<PostDetails />} />
+                    <Route path="/edit-post/:postId" element={<EditPost />} />
                 </Route>
             </Routes>
         </>

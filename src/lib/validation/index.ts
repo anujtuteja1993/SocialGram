@@ -24,23 +24,17 @@ export const SignInValidation = z.object({
         .min(8, { message: "The password needs to be atleast 8 characters" }),
 });
 
-// const ACCEPTED_IMAGE_TYPES = [
-//     "image/jpeg",
-//     "image/jpg",
-//     "image/png",
-//     "image/webp",
-// ];
+const ACCEPTED_IMAGE_TYPES = [
+    "image/jpeg",
+    "image/jpg",
+    "image/png",
+    "image/webp",
+];
 
-const AspectRatioTypeSchema = z.enum(["4/5", "1/1", "16/9"]);
+const AspectRatioTypeSchema = z.enum(["4/5", "1/1", "1.91/1"]);
 
-export const PostValidation = z.object({
+export const PostValidationBase = z.object({
     aspectRatio: AspectRatioTypeSchema,
-    file: z.custom<File[]>(),
-    // .refine((files) => files?.length == 1, "Atleast 1 image is required")
-    // .refine(
-    //     (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
-    //     ".jpg, .jpeg, .png and .webp files are accepted."
-    // ),
     caption: z
         .string()
         .min(5, { message: "The caption needs to be atleast 5 characters" })
@@ -51,3 +45,27 @@ export const PostValidation = z.object({
         .min(2, { message: "Please enter a valid location" })
         .max(100),
 });
+
+export const PostValidation = z.discriminatedUnion("mode", [
+    z
+        .object({
+            mode: z.literal("Create"),
+            files: z
+                .custom<File[]>()
+                .refine(
+                    (files) => files?.length > 0,
+                    "Atleast 1 image is required"
+                )
+                .refine(
+                    (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
+                    ".jpg, .jpeg, .png and .webp files are accepted."
+                ),
+        })
+        .merge(PostValidationBase),
+    z
+        .object({
+            mode: z.literal("Edit"),
+            files: z.custom<File[]>(),
+        })
+        .merge(PostValidationBase),
+]);

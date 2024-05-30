@@ -6,17 +6,10 @@ import { Models } from "appwrite";
 const Saved = () => {
     const { data: user } = useGetCurrentUser();
 
-    // console.log(user?.save);
-
-    // const savedPosts = user?.save
-    //     .map((saved: { post: Models.Document[] }) => saved.post)
-    //     .reverse();
-
     const savedPostsIds = user?.save
         .map((saved: Models.Document) => saved.post.$id)
         .reverse();
 
-    // console.log(test);
     return (
         <div className="flex flex-col gap-10 mt-20 items-center w-full">
             <div className="flex gap-1 items-center">

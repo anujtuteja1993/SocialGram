@@ -1,4 +1,4 @@
-import { NewPost, NewUser } from "../../types/types";
+import { NewPost, NewUser, UpdatePost } from "../../types/types";
 import { ID, Query } from "appwrite";
 import { account, appwriteConfig, avatars, databases, storage } from "./config";
 import { encodeImageToBlurhash } from "../utils/blurhash";
@@ -125,11 +125,11 @@ export const createNewPost = async (post: NewPost) => {
 
         console.log(post);
 
-        for (let i = 0; i < post.file.length; i++) {
+        for (let i = 0; i < post.files.length; i++) {
             const upload = await storage.createFile(
                 appwriteConfig.storageId,
                 ID.unique(),
-                post.file[i]
+                post.files[i]
             );
 
             if (!upload) {
@@ -215,8 +215,6 @@ export const likePost = async (postId: string, likesArray: string[]) => {
             postId,
             { likes: likesArray }
         );
-
-        console.log(like);
         return like;
     } catch (error) {
         console.log(error);
@@ -235,7 +233,6 @@ export const savePost = async (userId: string, postId: string) => {
             }
         );
 
-        console.log(save);
         return save;
     } catch (error) {
         console.log(error);
@@ -250,7 +247,6 @@ export const unSavePost = async (saveId: string) => {
             saveId
         );
 
-        console.log(save);
         return save;
     } catch (error) {
         console.log(error);
@@ -266,6 +262,93 @@ export const getPostById = async (postId: string) => {
         );
 
         return post.documents[0];
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const updatePost = async (post: UpdatePost) => {
+    try {
+        if (post.files.length > 0) {
+            const imgViews: URL[] = [];
+            const imgIds: string[] = [];
+            const blurHashes: string[] = [];
+
+            for (let i = 0; i < post.files.length; i++) {
+                const upload = await storage.createFile(
+                    appwriteConfig.storageId,
+                    ID.unique(),
+                    post.files[i]
+                );
+
+                if (!upload) {
+                    throw Error;
+                }
+
+                const imgView = storage.getFileView(
+                    appwriteConfig.storageId,
+                    upload.$id
+                );
+
+                if (!imgView) {
+                    try {
+                        await storage.deleteFile(
+                            appwriteConfig.storageId,
+                            upload.$id
+                        );
+                        return true;
+                    } catch (error) {
+                        console.log(error);
+                    }
+                    throw Error;
+                }
+
+                blurHashes.push(
+                    await encodeImageToBlurhash(imgView.toString())
+                );
+                imgViews.push(imgView);
+                imgIds.push(upload.$id);
+            }
+
+            const updatedPost = await databases.updateDocument(
+                appwriteConfig.databaseId,
+                appwriteConfig.postsCollectionId,
+                post.postId,
+                {
+                    caption: post.caption,
+                    hashtags: post.hashtags,
+                    imgUrls: imgViews,
+                    imgIds: imgIds,
+                    aspectRatio: post.aspectRatio,
+                    blurHashes: blurHashes,
+                    location: post.location,
+                }
+            );
+
+            if (updatedPost) {
+                for (let i = 0; i < post.imgIds.length; i++) {
+                    await storage.deleteFile(
+                        appwriteConfig.storageId,
+                        post.imgIds[i]
+                    );
+                }
+            }
+            return updatedPost;
+        }
+
+        const updatedPost = await databases.updateDocument(
+            appwriteConfig.databaseId,
+            appwriteConfig.postsCollectionId,
+            post.postId,
+            {
+                caption: post.caption,
+                hashtags: post.hashtags,
+                aspectRatio: post.aspectRatio,
+                location: post.location,
+            }
+        );
+
+        return updatedPost;
     } catch (error) {
         console.log(error);
     }

@@ -24,9 +24,19 @@ export type UserContextType = {
 
 export type NewPost = {
     userId: string;
-    file: File[];
+    files: File[];
     aspectRatio: string;
     caption: string;
     hashtags: string[];
     location: string;
+};
+
+export type UpdatePost = {
+    postId: string;
+    files: File[];
+    aspectRatio: string;
+    caption: string;
+    hashtags: string[];
+    location: string;
+    imgIds: string[];
 };

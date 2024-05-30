@@ -5,7 +5,7 @@ import {
     useQueryClient,
     useQueries,
 } from "@tanstack/react-query";
-import { NewUser } from "../../types/types";
+import { NewUser, UpdatePost } from "../../types/types";
 import {
     createNewPost,
     createNewUser,
@@ -18,6 +18,7 @@ import {
     signInAccount,
     signOutAccount,
     unSavePost,
+    updatePost,
 } from "../appwrite/api";
 
 export const useCreateUserAccount = () => {
@@ -112,7 +113,7 @@ export const useUnsavePost = () => {
 
 export const useGetUserById = (userId: string) => {
     return useQuery({
-        queryKey: ["getUserByID"],
+        queryKey: ["getUserById"],
         queryFn: () => getUserById(userId),
         enabled: !!userId,
         refetchOnWindowFocus: false,
@@ -131,16 +132,37 @@ export const useGetPostsbyIds = (postsIds: string[]) => {
         queries: postsIds?.map((id: string) => ({
             queryKey: ["getPostsByIds", id],
             queryFn: () => getPostById(id),
+            refetchOnWindowFocus: false,
         })),
         combine: (posts) => {
             return {
                 data: posts.map((post) => post.data),
-                pending: posts.some((post) => post.isPending),
+                pending: posts.some((post) => post.isFetching),
             };
         },
     });
 };
 
+export const useUpdatePost = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (post: UpdatePost) => updatePost(post),
+        onSuccess: (data: any) => {
+            queryClient.invalidateQueries({
+                queryKey: ["getPostById", data?.$id],
+            });
+            queryClient.invalidateQueries({
+                queryKey: ["getPostsByIds"],
+            });
+            queryClient.invalidateQueries({
+                queryKey: ["getRecentPosts"],
+            });
+            queryClient.invalidateQueries({
+                queryKey: ["getCurrentUser"],
+            });
+        },
+    });
+};
 // export const useGetPostsbyIds = (postsIds: string[]) => {
 //     return useQueries({
 //         queries: postsIds?.map((id: string) => ({

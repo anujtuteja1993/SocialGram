@@ -14,8 +14,6 @@ const Profile = () => {
         .map((post: { $id: string }) => post.$id)
         .reverse();
 
-    console.log(currentUser);
-
     return (
         <>
             {isUserFetching ? (

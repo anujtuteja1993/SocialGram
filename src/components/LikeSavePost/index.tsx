@@ -20,7 +20,6 @@ type LikeSavePostProps = {
 };
 
 const LikeSavePost = ({ post, userId }: LikeSavePostProps) => {
-    // console.log(post);
     const [likes, setLikes] = useState<string[]>(
         post.likes.map((like: any) => like.$id)
     );
@@ -59,7 +58,6 @@ const LikeSavePost = ({ post, userId }: LikeSavePostProps) => {
     const handleSaveClick = () => {
         if (savedPost) {
             setSaved(false);
-            console.log(savedPost);
             unSavePost(savedPost.$id);
         } else {
             savePost({ userId: userId, postId: post.$id });
