@@ -1,5 +1,4 @@
 import { useParams } from "react-router-dom";
-import { useUserContext } from "../../../contexts/userContext";
 import { useGetUserById } from "../../../lib/react-query/queriesAndMutations";
 import PostGallery from "../../../components/PostGallery";
 import { HiSquares2X2 } from "react-icons/hi2";
@@ -8,7 +7,6 @@ import ProfileSkeleton from "./ProfileSkeleton";
 const Profile = () => {
     const { id } = useParams();
     const { data: user, isFetching: isUserFetching } = useGetUserById(id || "");
-    const { user: currentUser } = useUserContext();
 
     const userPostIds = user?.posts
         .map((post: { $id: string }) => post.$id)
