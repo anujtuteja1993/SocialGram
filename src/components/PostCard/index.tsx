@@ -66,6 +66,7 @@ const PostCard = ({ post }: PostCardProps) => {
                     imgUrls={post.imgUrls}
                     blurHashes={post.blurHashes}
                     aspectRatio={post.aspectRatio}
+                    postId={post.$id}
                 />
                 <LikeSavePost post={post} userId={user.id} />
             </div>
