@@ -61,7 +61,7 @@ const Carousel = ({
         images.forEach((slide: Element) => observer.observe(slide));
         return () =>
             images.forEach((slide: Element) => observer.unobserve(slide));
-    }, [imgUrls]);
+    }, [carouselRef.current, imgUrls]);
 
     useEffect(() => {
         if (currentImgIndex != imgUrls.length - 1) {
@@ -79,7 +79,6 @@ const Carousel = ({
             return;
         }
 
-        // setPrevButtonDisabled(false);
         document
             .querySelector(
                 postId
@@ -107,7 +106,7 @@ const Carousel = ({
     return (
         <div className="relative">
             <div
-                className="w-full carousel border-[1px] transition-all duration-200 rounded-box border-primary-content overflow-scroll md:overflow-hidden"
+                className="w-full flex carousel border-[1px] transition-all duration-200 rounded-box border-primary-content"
                 style={{ aspectRatio: `${aspectRatio ? aspectRatio : "4/5"}` }}
                 ref={carouselRef}
             >
@@ -127,7 +126,7 @@ const Carousel = ({
                     <div
                         id={postId ? "img" + postId + i : "img" + i}
                         key={i}
-                        className="carousel-item w-full relative"
+                        className="carousel-item w-full"
                     >
                         <img
                             src={imgUrl}

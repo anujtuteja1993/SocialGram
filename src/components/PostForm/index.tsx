@@ -119,30 +119,34 @@ const PostForm = ({ post, mode }: PostFormProps) => {
             className="container w-screen mb-5 md:border-[1px] rounded-xl border-primary-content md:max-w-xl"
         >
             <div className="flex flex-col m-10 gap-1 md:gap-2">
-                <Controller
-                    control={form.control}
-                    name="aspectRatio"
-                    render={({ field: { onChange } }) => (
-                        <AspectRatioSelector
-                            aspectRatio={aspectRatio}
-                            setAspectRatio={setAspectRatio}
-                            onFieldChange={onChange}
-                        />
-                    )}
-                />
-                <Controller
-                    control={form.control}
-                    name="files"
-                    render={({ field: { onChange } }) => (
-                        <PhotoUploader
-                            onFieldChange={onChange}
-                            aspectRatio={aspectRatio}
-                            imgUrls={post?.imgUrls}
-                            blurHashes={post?.blurHashes}
-                            errored={form.formState.errors.files ? true : false}
-                        />
-                    )}
-                />
+                <div className="flex flex-col gap-5 md:gap-4">
+                    <Controller
+                        control={form.control}
+                        name="aspectRatio"
+                        render={({ field: { onChange } }) => (
+                            <AspectRatioSelector
+                                aspectRatio={aspectRatio}
+                                setAspectRatio={setAspectRatio}
+                                onFieldChange={onChange}
+                            />
+                        )}
+                    />
+                    <Controller
+                        control={form.control}
+                        name="files"
+                        render={({ field: { onChange } }) => (
+                            <PhotoUploader
+                                onFieldChange={onChange}
+                                aspectRatio={aspectRatio}
+                                imgUrls={post?.imgUrls}
+                                blurHashes={post?.blurHashes}
+                                errored={
+                                    form.formState.errors.files ? true : false
+                                }
+                            />
+                        )}
+                    />
+                </div>
                 <div className="h-[20px]">
                     {form.formState.errors.files && (
                         <div className="flex flex-row ml-2 items-center">

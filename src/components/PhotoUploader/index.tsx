@@ -1,6 +1,5 @@
-//Need to implement scrolling with buttons for Carousel and Separating the carousel component.
-
 import { HiOutlinePhoto as PhotoIcon } from "react-icons/hi2";
+import { MdCancel as DeleteImages } from "react-icons/md";
 import { SetStateAction, useCallback, useState } from "react";
 import { FileWithPath, useDropzone } from "react-dropzone";
 import Carousel from "../Carousel/Index";
@@ -60,14 +59,27 @@ const PhotoUploader = ({
         onDrop,
     });
 
+    const removeFiles = () => {
+        acceptedFiles.length = 0;
+        acceptedFiles.splice(0, acceptedFiles.length);
+        setFileUrl(undefined);
+        setFiles([]);
+        return;
+    };
+
     return (
-        <div
-            className={`w-full flex rounded-box items-center justify-center ${
-                errored ? "input-error" : ""
-            }`}
-            {...getRootProps()}
-        >
-            <input {...getInputProps()} />
+        <div className="indicator w-full h-full">
+            {fileUrl && (
+                <div className="indicator-item">
+                    <button
+                        type="button"
+                        className="h-[25px] w-[25px] md:h-[30px] md:w-[30px]"
+                        onClick={() => removeFiles()}
+                    >
+                        <DeleteImages className="h-full w-full text-accent-content" />
+                    </button>
+                </div>
+            )}
             {fileUrl ? (
                 <Carousel
                     imgUrls={fileUrl}
@@ -77,16 +89,24 @@ const PhotoUploader = ({
             ) : (
                 acceptedFiles.length == 0 && (
                     <div
-                        className={`flex flex-col gap-4 w-full items-center justify-center border-[1px] transition-all duration-200 rounded-box border-primary-content${
-                            errored ? "border-2 border-[#FE6F6F]" : ""
+                        className={`w-full flex rounded-box items-center justify-center ${
+                            errored ? "input-error" : ""
                         }`}
-                        style={{ aspectRatio: `${aspectRatio}` }}
                     >
-                        <PhotoIcon className="h-[50px] w-[50px]" />
-                        <p className="hidden md:block">
-                            Drag Photos here or click to Browse
-                        </p>
-                        <p className="md:hidden">Tap to Add Photos</p>
+                        <input {...getInputProps()} />
+                        <div
+                            {...getRootProps()}
+                            className={`flex flex-col gap-4 w-full items-center justify-center border-[1px] transition-all duration-200 rounded-box border-primary-content${
+                                errored ? "border-2 border-[#FE6F6F]" : ""
+                            }`}
+                            style={{ aspectRatio: `${aspectRatio}` }}
+                        >
+                            <PhotoIcon className="h-[50px] w-[50px]" />
+                            <p className="hidden md:block">
+                                Drag Photos here or click to Browse
+                            </p>
+                            <p className="md:hidden">Tap to Add Photos</p>
+                        </div>
                     </div>
                 )
             )}
