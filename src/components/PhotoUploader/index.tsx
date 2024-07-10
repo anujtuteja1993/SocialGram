@@ -55,9 +55,13 @@ const PhotoUploader = ({
         [files]
     );
 
-    const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
-        onDrop,
-    });
+    const { acceptedFiles, getRootProps, getInputProps, isDragReject } =
+        useDropzone({
+            onDrop,
+            accept: {
+                "image/*": [".jpeg", ".png", ".jpg"],
+            },
+        });
 
     const removeFiles = () => {
         acceptedFiles.length = 0;
@@ -80,7 +84,7 @@ const PhotoUploader = ({
                     </button>
                 </div>
             )}
-            {fileUrl ? (
+            {fileUrl?.length ? (
                 <Carousel
                     imgUrls={fileUrl}
                     aspectRatio={aspectRatio}
@@ -102,6 +106,9 @@ const PhotoUploader = ({
                             style={{ aspectRatio: `${aspectRatio}` }}
                         >
                             <PhotoIcon className="h-[50px] w-[50px]" />
+                            {isDragReject && (
+                                <p>Only images files are accepted</p>
+                            )}
                             <p className="hidden md:block">
                                 Drag Photos here or click to Browse
                             </p>
