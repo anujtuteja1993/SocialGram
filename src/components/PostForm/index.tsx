@@ -1,18 +1,10 @@
-// import {
-//     TbRectangleVertical as AspectRatioDefaultOutline,
-//     TbRectangleVerticalFilled as AspectRatioDefaultSolid,
-//     TbRectangle as AspectRatioVideoOutline,
-//     TbRectangleFilled as AspectRatioVideoSolid,
-//     TbSquare as AspectRatioSquareOutline,
-//     TbSquareFilled as AspectRatioSquareSolid,
-// } from "react-icons/tb";
 import { Controller, useForm } from "react-hook-form";
 import PhotoUploader from "../PhotoUploader";
 import { z } from "zod";
 import { PostValidation } from "../../lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useUserContext } from "../../contexts/userContext";
-import { useState } from "react";
+import { SetStateAction, useState } from "react";
 import {
     useCreateNewPost,
     useUpdatePost,
@@ -25,9 +17,10 @@ import AspectRatioSelector from "../AspectRatioSelector";
 type PostFormProps = {
     post?: Models.Document;
     mode: "Create" | "Edit";
+    setPostingStatus: React.Dispatch<SetStateAction<Boolean>>;
 };
 
-const PostForm = ({ post, mode }: PostFormProps) => {
+const PostForm = ({ post, mode, setPostingStatus }: PostFormProps) => {
     const [aspectRatio, setAspectRatio] = useState<string>(
         post ? post.aspectRatio : "4/5"
     );
@@ -61,6 +54,14 @@ const PostForm = ({ post, mode }: PostFormProps) => {
                 position: "top-center",
                 draggable: true,
                 theme: "dark",
+                onOpen: () => {
+                    document.body.style.overflow = "hidden";
+                    setPostingStatus(true);
+                },
+                onClose: () => {
+                    document.body.style.overflow = "scroll";
+                    setPostingStatus(false);
+                },
             });
             const updatedPost = await updatePost({
                 ...values,
@@ -82,6 +83,14 @@ const PostForm = ({ post, mode }: PostFormProps) => {
             position: "top-center",
             draggable: true,
             theme: "dark",
+            onOpen: () => {
+                document.body.style.overflow = "hidden";
+                setPostingStatus(true);
+            },
+            onClose: () => {
+                document.body.style.overflow = "scroll";
+                setPostingStatus(false);
+            },
         });
         const newPost = await createNewPost({
             ...values,

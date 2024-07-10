@@ -8,7 +8,6 @@ import { Link } from "react-router-dom";
 import { SetStateAction, useEffect, useRef } from "react";
 import { useDeletePost } from "../../lib/react-query/queriesAndMutations";
 import { toast } from "react-toastify";
-//import { useNavigate } from "react-router-dom";
 
 type PostDetailsModalProps = {
     post?: Models.Document;
@@ -19,7 +18,6 @@ const PostDetailsModal = ({ post, setIsDeleting }: PostDetailsModalProps) => {
     const { user } = useUserContext();
 
     const { mutateAsync: deletePost } = useDeletePost();
-    //const navigate = useNavigate();
 
     const deletePostClick = async () => {
         const postToastId = toast.loading("Deleting Post. Please wait!", {
@@ -34,15 +32,6 @@ const PostDetailsModal = ({ post, setIsDeleting }: PostDetailsModalProps) => {
                 document.body.style.overflow = "scroll";
                 setIsDeleting(false);
             },
-            // window.addEventListener(
-            //     "click",
-            //     (e) => {
-            //         e.stopPropagation();
-            //         e.stopImmediatePropagation();
-            //         e.preventDefault();
-            //     },
-            //     true
-            // ),
         });
 
         if (post) {
