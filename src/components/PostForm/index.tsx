@@ -119,7 +119,8 @@ const PostForm = ({ post, mode, setPostingStatus }: PostFormProps) => {
     };
 
     const handleCancel = () => {
-        window.location.reload();
+        //window.location.reload();
+        form.reset();
     };
 
     return (

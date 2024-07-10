@@ -16,7 +16,7 @@ import { Link } from "react-router-dom";
 const Bottombar = () => {
     const { user } = useUserContext();
     return (
-        <div className="flex fixed bottom-0 bg-base-100 md:hidden">
+        <div className="flex fixed bottom-0 bg-base-100 z-20 md:hidden">
             <div className="flex flex-row w-screen h-auto justify-around">
                 <Link to="/">
                     <button className="h-[50px] w-[50px] inline-flex justify-center items-center rounded-lg transition hover:scale-110 active:scale-90">
