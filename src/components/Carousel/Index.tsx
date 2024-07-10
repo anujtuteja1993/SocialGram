@@ -110,24 +110,24 @@ const Carousel = ({
                 style={{ aspectRatio: `${aspectRatio ? aspectRatio : "4/5"}` }}
                 ref={carouselRef}
             >
-                {!isImgLoaded && blurHashes && (
-                    <div className="top-0 bottom-0 w-full">
-                        <Blurhash
-                            hash={blurHashes[0]}
-                            width="100%"
-                            height="100%"
-                            resolutionX={32}
-                            resolutionY={32}
-                            punch={1}
-                        />
-                    </div>
-                )}
                 {imgUrls.map((imgUrl, i) => (
                     <div
                         id={postId ? "img" + postId + i : "img" + i}
                         key={i}
                         className="carousel-item w-full"
                     >
+                        {!isImgLoaded && blurHashes && (
+                            <div className="top-0 bottom-0 w-full">
+                                <Blurhash
+                                    hash={blurHashes[i]}
+                                    width="100%"
+                                    height="100%"
+                                    resolutionX={32}
+                                    resolutionY={32}
+                                    punch={1}
+                                />
+                            </div>
+                        )}
                         <img
                             src={imgUrl}
                             className={`object-cover w-full ${
