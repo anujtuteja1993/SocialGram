@@ -4,14 +4,17 @@ import { useGetPostsbyIds } from "../../lib/react-query/queriesAndMutations";
 import { Blurhash } from "react-blurhash";
 import { useState } from "react";
 import PostDetailsModal from "../PostDetailsModal";
+import CoverScreen from "../CoverScreen";
 
 const PostGallery = ({ postIds }: { postIds: string[] }) => {
     const fetchedPosts = useGetPostsbyIds(postIds);
     const [isImgLoaded, setIsImgLoaded] = useState<boolean>(false);
     const [modalPost, setModalPost] = useState<Models.Document | undefined>();
+    const [isDeleting, setIsDeleting] = useState<Boolean>(false);
 
     return (
         <>
+            {isDeleting && <CoverScreen />}
             {fetchedPosts.pending ? (
                 <span className="loading loading-ring loading-lg"></span>
             ) : (
@@ -75,7 +78,7 @@ const PostGallery = ({ postIds }: { postIds: string[] }) => {
                     )}
                 </div>
             )}
-            <PostDetailsModal post={modalPost} />
+            <PostDetailsModal post={modalPost} setIsDeleting={setIsDeleting} />
         </>
     );
 };

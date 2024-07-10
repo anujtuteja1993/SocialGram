@@ -1,4 +1,4 @@
-import { NewPost, NewUser, UpdatePost } from "../../types/types";
+import { DeletePost, NewPost, NewUser, UpdatePost } from "../../types/types";
 import { ID, Query } from "appwrite";
 import { account, appwriteConfig, avatars, databases, storage } from "./config";
 import { encodeImageToBlurhash } from "../utils/blurhash";
@@ -349,6 +349,32 @@ export const updatePost = async (post: UpdatePost) => {
         );
 
         return updatedPost;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const deletePost = async (post: DeletePost) => {
+    try {
+        const deletedPost = await databases.deleteDocument(
+            appwriteConfig.databaseId,
+            appwriteConfig.postsCollectionId,
+            post.postId
+        );
+
+        if (deletedPost) {
+            for (let i = 0; i < post.imgIds.length; i++) {
+                await storage.deleteFile(
+                    appwriteConfig.storageId,
+                    post.imgIds[i]
+                );
+            }
+
+            for (let i = 0; i < post.save.length; i++) {
+                await unSavePost(post.save[i].$id);
+            }
+        }
+        return post.userId;
     } catch (error) {
         console.log(error);
     }

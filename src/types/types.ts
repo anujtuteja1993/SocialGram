@@ -1,3 +1,5 @@
+import { Models } from "appwrite";
+
 export type NewUser = {
     name: string;
     username: string;
@@ -39,4 +41,11 @@ export type UpdatePost = {
     hashtags: string[];
     location: string;
     imgIds: string[];
+};
+
+export type DeletePost = {
+    postId: string;
+    save: Models.Document[];
+    imgIds: string[];
+    userId: string;
 };
